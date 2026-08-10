@@ -1,0 +1,29 @@
+@model Branch
+
+@{
+    ViewData["Title"] = "Branch Details";
+}
+
+<h1>Branch Details</h1>
+
+<div class="row">
+    <div class="col-md-5">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.BranchId)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.BranchId)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Address)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Address)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.BranchPhoneNumber)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.BranchPhoneNumber)</dd>
+
+            <dt class="col-sm-4">Manager</dt>
+            <dd class="col-sm-8">@(Model.Manager != null ? Model.Manager.UserName : "Not assigned")</dd>
+        </dl>
+    </div>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.BranchId" class="btn btn-secondary">Edit</a>
+<a asp-action="Orders" asp-route-id="@Model.BranchId" class="btn btn-info">View Orders</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>

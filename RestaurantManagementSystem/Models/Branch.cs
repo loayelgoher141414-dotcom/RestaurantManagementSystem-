@@ -18,6 +18,10 @@ namespace RestaurantManagementSystem.Models
             ErrorMessage = "Phone number cannot exceed 20 characters")]
         public string BranchPhoneNumber { get; set; } = string.Empty;
 
+        public int? ManagerId { get; set; }
+
+        public User? Manager { get; set; }
+
         public ICollection<User> Users { get; set; }= new List<User>();
 
         public ICollection<Order> Orders { get; set; }= new List<Order>();

@@ -1,0 +1,31 @@
+@model Branch
+
+@{
+    ViewData["Title"] = "Delete Branch";
+}
+
+<h1>Delete Branch</h1>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<h3>Are you sure you want to delete this branch?</h3>
+<div class="row">
+    <div class="col-md-5">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Address)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Address)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.BranchPhoneNumber)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.BranchPhoneNumber)</dd>
+
+            <dt class="col-sm-4">Manager</dt>
+            <dd class="col-sm-8">@(Model.Manager != null ? Model.Manager.UserName : "Not assigned")</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="BranchId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+        </form>
+    </div>
+</div>

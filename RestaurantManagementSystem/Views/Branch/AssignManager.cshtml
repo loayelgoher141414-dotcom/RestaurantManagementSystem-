@@ -1,0 +1,33 @@
+@model Branch
+
+@{
+    ViewData["Title"] = "Assign Manager";
+}
+
+<h1>Assign Manager</h1>
+<h5 class="text-muted">Branch: @Model.Address</h5>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="AssignManager" asp-route-id="@Model.BranchId">
+            <div class="form-group mb-3">
+                <label class="control-label">Manager (employee of this branch)</label>
+                <select name="managerId" class="form-control" asp-items="ViewBag.Employees">
+                    <option value="">-- Not assigned --</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+        </form>
+
+        @if (!((IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.Employees).Any())
+        {
+            <p class="text-muted mt-3">
+                No employees are currently assigned to this branch. Add an employee (User with Role = "Employee") to this branch first.
+            </p>
+        }
+    </div>
+</div>

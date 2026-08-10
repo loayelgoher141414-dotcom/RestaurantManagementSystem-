@@ -23,6 +23,13 @@ namespace RestaurantManagementSystem.Models
                 .OnDelete(DeleteBehavior.Restrict);
 
 
+            modelBuilder.Entity<Branch>()
+                .HasOne(b => b.Manager)
+                .WithMany()
+                .HasForeignKey(b => b.ManagerId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Branch)
                 .WithMany(b => b.Orders)
