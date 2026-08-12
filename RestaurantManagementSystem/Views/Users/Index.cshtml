@@ -1,0 +1,82 @@
+﻿@model IEnumerable<RestaurantManagementSystem.Models.User>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Employees</h2>
+
+        <a asp-action="Create" class="btn btn-primary">
+            Add Employee
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No employees found.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Branch</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>@employee.UserName</td>
+
+                        <td>@employee.UserPhoneNumber</td>
+
+                        <td>@employee.Email</td>
+
+                        <td>@employee.Role</td>
+
+                        <td>
+                            @employee.Branch?.Address
+                        </td>
+
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@employee.UserId"
+                               class="btn btn-info btn-sm">
+                                Profile
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@employee.UserId"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@employee.UserId"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+
+</div>

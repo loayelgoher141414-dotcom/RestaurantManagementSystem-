@@ -1,0 +1,116 @@
+﻿@model RestaurantManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Add Employee";
+}
+
+<div class="container mt-4">
+
+    <h2>Add Employee</h2>
+
+    <hr />
+
+    <form asp-action="Create" method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="UserName" class="form-label">
+                Username
+            </label>
+
+            <input asp-for="UserName"
+                   class="form-control" />
+
+            <span asp-validation-for="UserName"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="UserPhoneNumber"
+                   class="form-label">
+                Phone Number
+            </label>
+
+            <input asp-for="UserPhoneNumber"
+                   class="form-control" />
+
+            <span asp-validation-for="UserPhoneNumber"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email"
+                   class="form-label">
+                Email
+            </label>
+
+            <input asp-for="Email"
+                   class="form-control" />
+
+            <span asp-validation-for="Email"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address"
+                   class="form-label">
+                Address
+            </label>
+
+            <textarea asp-for="Address"
+                      class="form-control">
+            </textarea>
+
+            <span asp-validation-for="Address"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="BranchId"
+                   class="form-label">
+                Branch
+            </label>
+
+            <select asp-for="BranchId"
+                    class="form-select">
+
+                <option value="">
+                    -- Select Branch --
+                </option>
+
+                @foreach (var branch in ViewBag.Branches)
+                {
+                    <option value="@branch.BranchId">
+                        @branch.Address
+                    </option>
+                }
+
+            </select>
+
+            <span asp-validation-for="BranchId"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-success">
+            Add Employee
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>

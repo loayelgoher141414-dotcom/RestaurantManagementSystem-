@@ -1,0 +1,63 @@
+﻿@model RestaurantManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Employee Profile";
+}
+
+<div class="container mt-4">
+
+    <h2>Employee Profile</h2>
+
+    <hr />
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <h4 class="card-title">
+                @Model.UserName
+            </h4>
+
+            <hr />
+
+            <p>
+                <strong>Phone:</strong>
+                @Model.UserPhoneNumber
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                @Model.Email
+            </p>
+
+            <p>
+                <strong>Address:</strong>
+                @Model.Address
+            </p>
+
+            <p>
+                <strong>Role:</strong>
+                @Model.Role
+            </p>
+
+            <p>
+                <strong>Branch:</strong>
+                @Model.Branch?.Address
+            </p>
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.UserId"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

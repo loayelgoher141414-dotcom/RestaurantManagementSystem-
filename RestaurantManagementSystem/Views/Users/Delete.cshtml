@@ -1,0 +1,58 @@
+﻿@model RestaurantManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<div class="container mt-4">
+
+    <h2>Delete Employee</h2>
+
+    <div class="alert alert-danger mt-3">
+        Are you sure you want to delete this employee?
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <h4>@Model.UserName</h4>
+
+            <p>
+                <strong>Email:</strong>
+                @Model.Email
+            </p>
+
+            <p>
+                <strong>Phone:</strong>
+                @Model.UserPhoneNumber
+            </p>
+
+            <p>
+                <strong>Branch:</strong>
+                @Model.Branch?.Address
+            </p>
+
+            <form asp-action="Delete"
+                  method="post">
+
+                <input type="hidden"
+                       asp-for="UserId" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
