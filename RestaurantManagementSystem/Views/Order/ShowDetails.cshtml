@@ -1,0 +1,92 @@
+﻿@model RestaurantManagementSystem.Models.Order
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Order #@Model.OrderId</h3>
+        <span class="badge bg-warning text-dark fs-6">@Model.OrderStatus</span>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="mb-1"><strong>User Id:</strong> @Model.UserId</p>
+            <p class="mb-1"><strong>Branch:</strong> @Model.Branch.Address</p>
+            <p class="mb-0"><strong>Total:</strong> @Model.TotalPrice.ToString("0.00") EGP</p>
+        </div>
+    </div>
+
+    <h5>Items Ordered</h5>
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 70px;">Image</th>
+                <th>Item</th>
+                <th style="width: 100px;">Quantity</th>
+                <th style="width: 100px;">Price</th>
+                <th style="width: 100px;">Subtotal</th>
+                <th style="width: 260px;">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Item.ItemImage" alt="@item.Item.ItemName"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" />
+                    </td>
+                    <td>@item.Item.ItemName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ItemPrice.ToString("0.00")</td>
+                    <td>@((item.ItemPrice * item.Quantity).ToString("0.00"))</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <form asp-action="UpdateQuantity" asp-controller="Order" method="post" class="d-flex align-items-center gap-1 mb-0">
+                                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                <input type="number" name="newQuantity" value="@item.Quantity" min="1"
+                                       class="form-control form-control-sm" style="width: 60px;" />
+                                <button type="submit" class="btn btn-sm btn-success">Update Quantity</button>
+                            </form>
+
+                            <form asp-action="DeleteItem" asp-controller="Order" method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');" class="mb-0">
+                                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Delete Item</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex gap-2 mt-3">
+        <form asp-action="CancelOrder" asp-controller="Order" method="post">
+            <input type="hidden" name="id" value="@Model.OrderId" />
+            <button type="submit" class="btn btn-danger">Cancel Order</button>
+        </form>
+
+        <form asp-action="ConfirmOrder" asp-controller="Order" method="post">
+            <input type="hidden" name="id" value="@Model.OrderId" />
+            <button type="submit" class="btn btn-success">Confirm Order</button>
+        </form>
+
+        @if (Model.OrderStatus == "Confirmed")
+        {
+            <a asp-action="Invoice" asp-controller="Payment" asp-route-id="@Model.OrderId" class="btn btn-outline-secondary" target="_blank">View Invoice</a>
+        }
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info mt-3">
+            @TempData["Message"]
+        </div>
+    }
+
+</div>
+
+
+
