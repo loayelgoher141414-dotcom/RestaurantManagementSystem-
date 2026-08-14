@@ -36,8 +36,8 @@ namespace RestaurantManagementSystem.Models
         [Required(ErrorMessage = "Branch is required")]
         public int BranchId { get; set; }
 
-        public Branch Branch { get; set; } = null!;
+        public Branch? Branch { get; set; }
 
-        public ICollection<Order> Orders { get; set; }= new List<Order>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

@@ -4,60 +4,84 @@
     ViewData["Title"] = "Assign Role";
 }
 
-<h2>Assign Role</h2>
+<div class="container mt-4">
 
-<div class="row">
-    <div class="col-md-6">
+    <h2>Assign Role</h2>
 
-        <form asp-action="AssignRole" method="post">
+    <hr />
 
-            <input type="hidden" name="id" value="@Model.UserId" />
+    <div class="row">
+        <div class="col-md-6">
 
-            <div class="mb-3">
-                <label class="form-label">Employee Name</label>
-                <input type="text"
-                       class="form-control"
-                       value="@Model.UserName"
-                       readonly />
-            </div>
+            <form asp-action="AssignRole" method="post">
 
-            <div class="mb-3">
-                <label class="form-label">Role</label>
+                <input type="hidden"
+                       name="id"
+                       value="@Model.UserId" />
 
-                <select name="role" class="form-select">
+                <!-- User Name -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        User Name
+                    </label>
 
-                    @foreach (var role in ViewBag.Roles)
-                    {
-                        if (Model.Role == role)
+                    <input type="text"
+                           class="form-control"
+                           value="@Model.UserName"
+                           readonly />
+                </div>
+
+                <!-- Current Role -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        Current Role
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@Model.Role"
+                           readonly />
+                </div>
+
+                <!-- New Role -->
+                <div class="mb-3">
+                    <label for="role"
+                           class="form-label">
+                        Assign Role
+                    </label>
+
+                    <select id="role"
+                            name="role"
+                            class="form-select">
+
+                        @foreach (var role in ViewBag.Roles)
                         {
-                            <option value="@role" selected>
+                            <option value="@role"
+                                    selected="@(Model.Role == role)">
                                 @role
                             </option>
                         }
-                        else
-                        {
-                            <option value="@role">
-                                @role
-                            </option>
-                        }
-                    }
 
-                </select>
+                    </select>
 
-                <span asp-validation-for="Role"
-                      class="text-danger"></span>
-            </div>
+                    <span asp-validation-for="Role"
+                          class="text-danger">
+                    </span>
+                </div>
 
-            <button type="submit" class="btn btn-primary">
-                Save Role
-            </button>
+                <button type="submit"
+                        class="btn btn-primary">
+                    Save Role
+                </button>
 
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Cancel
-            </a>
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
 
-        </form>
+            </form>
 
+        </div>
     </div>
+
 </div>

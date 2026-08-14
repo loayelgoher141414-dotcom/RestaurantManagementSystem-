@@ -1,27 +1,26 @@
 ﻿@model RestaurantManagementSystem.Models.User
 
 @{
-    ViewData["Title"] = "Edit Employee";
+    ViewData["Title"] = "Edit User";
 }
 
 <div class="container mt-4">
 
-    <h2>Edit Employee</h2>
+    <h2>Edit User</h2>
 
     <hr />
 
     <form asp-action="Edit" method="post">
 
-        <input type="hidden"
-               asp-for="UserId" />
+        <input type="hidden" asp-for="UserId" />
 
         <div asp-validation-summary="ModelOnly"
              class="text-danger mb-3">
         </div>
 
+        <!-- Username -->
         <div class="mb-3">
-            <label asp-for="UserName"
-                   class="form-label">
+            <label asp-for="UserName" class="form-label">
                 Username
             </label>
 
@@ -33,6 +32,7 @@
             </span>
         </div>
 
+        <!-- Phone -->
         <div class="mb-3">
             <label asp-for="UserPhoneNumber"
                    class="form-label">
@@ -47,6 +47,7 @@
             </span>
         </div>
 
+        <!-- Email -->
         <div class="mb-3">
             <label asp-for="Email"
                    class="form-label">
@@ -61,6 +62,7 @@
             </span>
         </div>
 
+        <!-- Address -->
         <div class="mb-3">
             <label asp-for="Address"
                    class="form-label">
@@ -68,16 +70,39 @@
             </label>
 
             <textarea asp-for="Address"
-                      class="form-control">
-            </textarea>
+                      class="form-control"></textarea>
 
             <span asp-validation-for="Address"
                   class="text-danger">
             </span>
         </div>
 
+        <!-- Role -->
         <div class="mb-3">
+            <label asp-for="Role"
+                   class="form-label">
+                Role
+            </label>
 
+            <select asp-for="Role"
+                    class="form-select">
+
+                @foreach (var role in ViewBag.Roles)
+                {
+                    <option value="@role">
+                        @role
+                    </option>
+                }
+
+            </select>
+
+            <span asp-validation-for="Role"
+                  class="text-danger">
+            </span>
+        </div>
+
+        <!-- Branch -->
+        <div class="mb-3">
             <label asp-for="BranchId"
                    class="form-label">
                 Branch
@@ -85,6 +110,10 @@
 
             <select asp-for="BranchId"
                     class="form-select">
+
+                <option value="0">
+                    -- Select Branch --
+                </option>
 
                 @foreach (var branch in ViewBag.Branches)
                 {
@@ -98,7 +127,6 @@
             <span asp-validation-for="BranchId"
                   class="text-danger">
             </span>
-
         </div>
 
         <button type="submit"

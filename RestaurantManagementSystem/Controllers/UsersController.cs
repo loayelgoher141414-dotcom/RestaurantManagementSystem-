@@ -14,40 +14,38 @@ namespace RestaurantManagementSystem.Controllers
         }
 
         // =========================
-        // Display all employees
+        // Display all users
         // =========================
+        [HttpGet]
         public IActionResult Index()
         {
-            var employees = _context.Users
+            var users = _context.Users
                 .Include(u => u.Branch)
-                .Where(u => u.Role == "Employee")
                 .AsNoTracking()
                 .ToList();
 
-            return View(employees);
+            return View(users);
         }
 
         // =========================
-        // View employee profile
+        // View user profile
         // =========================
         [HttpGet]
         public IActionResult Details(int id)
         {
-            var employee = _context.Users
+            var user = _context.Users
                 .Include(u => u.Branch)
                 .AsNoTracking()
-                .FirstOrDefault(u =>
-                    u.UserId == id &&
-                    u.Role == "Employee");
+                .FirstOrDefault(u => u.UserId == id);
 
-            if (employee == null)
+            if (user == null)
                 return NotFound();
 
-            return View(employee);
+            return View(user);
         }
 
         // =========================
-        // Add Employee - GET
+        // Add User - GET
         // =========================
         [HttpGet]
         public IActionResult Create()
@@ -56,86 +54,138 @@ namespace RestaurantManagementSystem.Controllers
                 .AsNoTracking()
                 .ToList();
 
+            ViewBag.Roles = new List<string>
+            {
+                "Employee",
+                "Customer"
+            };
+
             return View();
         }
 
         // =========================
-        // Add Employee - POST
+        // Add User - POST
         // =========================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(User user)
         {
-            // New users created from this page are Employees
-            user.Role = "Employee";
-
-            // Remove Role validation because it is assigned automatically
-            ModelState.Remove(
-                nameof(RestaurantManagementSystem.Models.User.Role));
-
-            if (ModelState.IsValid)
+            // Validate Role
+            if (user.Role != "Employee" && user.Role != "Customer")
             {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(
+                    nameof(RestaurantManagementSystem.Models.User.Role),
+                    "Role must be Employee or Customer.");
             }
 
-            ViewBag.Branches = _context.Branches
-                .AsNoTracking()
-                .ToList();
+            // Validate Branch
+            if (user.BranchId <= 0)
+            {
+                ModelState.AddModelError(
+                    nameof(RestaurantManagementSystem.Models.User.BranchId),
+                    "Please select a branch.");
+            }
 
-            return View(user);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Branches = _context.Branches
+                    .AsNoTracking()
+                    .ToList();
+
+                ViewBag.Roles = new List<string>
+                {
+                    "Employee",
+                    "Customer"
+                };
+
+                return View(user);
+            }
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // =========================
-        // Edit Employee - GET
+        // Edit User - GET
         // =========================
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var employee = _context.Users
-                .FirstOrDefault(u =>
-                    u.UserId == id &&
-                    u.Role == "Employee");
+            var user = _context.Users
+                .FirstOrDefault(u => u.UserId == id);
 
-            if (employee == null)
+            if (user == null)
                 return NotFound();
 
             ViewBag.Branches = _context.Branches
                 .AsNoTracking()
                 .ToList();
 
-            return View(employee);
+            ViewBag.Roles = new List<string>
+            {
+                "Employee",
+                "Customer"
+            };
+
+            return View(user);
         }
 
         // =========================
-        // Edit Employee - POST
+        // Edit User - POST
         // =========================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(User user)
         {
-            // Keep the user as Employee from the Employee edit page
-            user.Role = "Employee";
-
-            // Remove Role validation because it is assigned automatically
-            ModelState.Remove(
-                nameof(RestaurantManagementSystem.Models.User.Role));
-
-            if (ModelState.IsValid)
+            // Validate Role
+            if (user.Role != "Employee" && user.Role != "Customer")
             {
-                _context.Users.Update(user);
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(
+                    nameof(RestaurantManagementSystem.Models.User.Role),
+                    "Role must be Employee or Customer.");
             }
 
-            ViewBag.Branches = _context.Branches
-                .AsNoTracking()
-                .ToList();
+            // Validate Branch
+            if (user.BranchId <= 0)
+            {
+                ModelState.AddModelError(
+                    nameof(RestaurantManagementSystem.Models.User.BranchId),
+                    "Please select a branch.");
+            }
 
-            return View(user);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Branches = _context.Branches
+                    .AsNoTracking()
+                    .ToList();
+
+                ViewBag.Roles = new List<string>
+                {
+                    "Employee",
+                    "Customer"
+                };
+
+                return View(user);
+            }
+
+            var existingUser = _context.Users
+                .FirstOrDefault(u => u.UserId == user.UserId);
+
+            if (existingUser == null)
+                return NotFound();
+
+            existingUser.UserName = user.UserName;
+            existingUser.UserPhoneNumber = user.UserPhoneNumber;
+            existingUser.Email = user.Email;
+            existingUser.Address = user.Address;
+            existingUser.Role = user.Role;
+            existingUser.BranchId = user.BranchId;
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // =========================
@@ -174,7 +224,6 @@ namespace RestaurantManagementSystem.Controllers
             if (user == null)
                 return NotFound();
 
-            // Only two roles are allowed
             if (role != "Employee" && role != "Customer")
             {
                 ModelState.AddModelError(
@@ -198,40 +247,36 @@ namespace RestaurantManagementSystem.Controllers
         }
 
         // =========================
-        // Delete Employee - GET
+        // Delete User - GET
         // =========================
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var employee = _context.Users
+            var user = _context.Users
                 .Include(u => u.Branch)
                 .AsNoTracking()
-                .FirstOrDefault(u =>
-                    u.UserId == id &&
-                    u.Role == "Employee");
+                .FirstOrDefault(u => u.UserId == id);
 
-            if (employee == null)
+            if (user == null)
                 return NotFound();
 
-            return View(employee);
+            return View(user);
         }
 
         // =========================
-        // Delete Employee - POST
+        // Delete User - POST
         // =========================
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var employee = _context.Users
-                .FirstOrDefault(u =>
-                    u.UserId == id &&
-                    u.Role == "Employee");
+            var user = _context.Users
+                .FirstOrDefault(u => u.UserId == id);
 
-            if (employee == null)
+            if (user == null)
                 return NotFound();
 
-            _context.Users.Remove(employee);
+            _context.Users.Remove(user);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));

@@ -1,12 +1,12 @@
 ﻿@model RestaurantManagementSystem.Models.User
 
 @{
-    ViewData["Title"] = "Employee Profile";
+    ViewData["Title"] = "User Profile";
 }
 
 <div class="container mt-4">
 
-    <h2>Employee Profile</h2>
+    <h2>User Profile</h2>
 
     <hr />
 
@@ -49,6 +49,12 @@
                asp-route-id="@Model.UserId"
                class="btn btn-warning">
                 Edit
+            </a>
+
+            <a asp-action="AssignRole"
+               asp-route-id="@Model.UserId"
+               class="btn btn-primary">
+                Assign Role
             </a>
 
             <a asp-action="Index"
