@@ -75,7 +75,7 @@
 
         @if (Model.OrderStatus == "Confirmed")
         {
-            <a asp-action="Invoice" asp-controller="Payment" asp-route-id="@Model.OrderId" class="btn btn-outline-secondary" target="_blank">View Invoice</a>
+            <a asp-action="Invoice" asp-controller="Payments" asp-route-id="@Model.OrderId" class="btn btn-outline-secondary" target="_blank">View Invoice</a>
         }
     </div>
 

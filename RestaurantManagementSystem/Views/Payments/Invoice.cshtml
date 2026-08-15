@@ -1,0 +1,324 @@
+﻿@model RestaurantManagementSystem.Models.Order
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <title>Invoice - Order #@Model.OrderId</title>
+
+    <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 30px;
+            }
+
+            .invoice {
+                max-width: 850px;
+                margin: auto;
+                background: white;
+                padding: 35px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #333;
+                padding-bottom: 20px;
+                margin-bottom: 25px;
+            }
+
+                .header h1 {
+                    margin: 0;
+                    font-size: 32px;
+                }
+
+                .header p {
+                    margin: 5px 0 0;
+                    color: #666;
+                }
+
+            .order-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                margin-bottom: 25px;
+            }
+
+                .order-info p {
+                    margin: 5px 0;
+                }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 12px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #333;
+                color: white;
+            }
+
+            .total {
+                text-align: right;
+                font-size: 22px;
+                font-weight: bold;
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 2px solid #333;
+            }
+
+            .payment-section {
+                margin-top: 30px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                background-color: #fafafa;
+            }
+
+                .payment-section h3 {
+                    margin-top: 0;
+                }
+
+                .payment-section label {
+                    display: block;
+                    margin-bottom: 8px;
+                    font-weight: bold;
+                }
+
+                .payment-section select {
+                    width: 100%;
+                    padding: 10px;
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                }
+
+            .pay-btn {
+                width: 100%;
+                padding: 12px;
+                border: none;
+                background-color: #198754;
+                color: white;
+                font-size: 17px;
+                cursor: pointer;
+            }
+
+                .pay-btn:hover {
+                    background-color: #146c43;
+                }
+
+            .print-btn {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+                .print-btn button {
+                    padding: 10px 20px;
+                    border: none;
+                    background-color: #333;
+                    color: white;
+                    cursor: pointer;
+                    font-size: 16px;
+                }
+
+                    .print-btn button:hover {
+                        background-color: #555;
+                    }
+
+            @@media print {
+
+                body {
+                    background-color: white;
+                    padding: 0;
+                }
+
+                .invoice {
+                    max-width: 100%;
+                    box-shadow: none;
+                }
+
+                .payment-section,
+                .print-btn {
+                    display: none;
+                }
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice">
+
+        <!-- Header -->
+        <div class="header">
+
+            <div>
+                <h1>INVOICE</h1>
+                <p>Restaurant Management System</p>
+            </div>
+
+            <div>
+                <strong>Order #@Model.OrderId</strong>
+            </div>
+
+        </div>
+
+
+        <!-- Order Information -->
+        <div class="order-info">
+
+            <div>
+                <p>
+                    <strong>User ID:</strong>
+                    @Model.UserId
+                </p>
+
+                <p>
+                    <strong>Branch:</strong>
+                    @Model.Branch.Address
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <strong>Order Status:</strong>
+                    @Model.OrderStatus
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Ordered Items -->
+        <h3>Order Items</h3>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+
+                        <td>
+                            @item.Item.ItemName
+                        </td>
+
+                        <td>
+                            @item.Quantity
+                        </td>
+
+                        <td>
+                            @item.ItemPrice.ToString("0.00") EGP
+                        </td>
+
+                        <td>
+                            @((item.ItemPrice * item.Quantity).ToString("0.00")) EGP
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+
+        <!-- Total -->
+        <div class="total">
+
+            Total:
+            @Model.TotalPrice.ToString("0.00") EGP
+
+        </div>
+
+
+        <!-- Payment -->
+        <div class="payment-section">
+
+            <h3>Payment</h3>
+
+            <form asp-action="Pay"
+                  asp-controller="Payments"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="orderId"
+                       value="@Model.OrderId" />
+
+                <label for="paymentMethod">
+                    Payment Method
+                </label>
+
+                <select id="paymentMethod"
+                        name="paymentMethod"
+                        required>
+
+                    <option value="">
+                        -- Select Payment Method --
+                    </option>
+
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="Visa">
+                        Visa
+                    </option>
+
+                    <option value="Wallet">
+                        Wallet
+                    </option>
+
+                </select>
+
+                <button type="submit"
+                        class="pay-btn">
+                    Pay Now
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Print -->
+        <div class="print-btn">
+
+            <button onclick="window.print()">
+                Print Invoice
+            </button>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
