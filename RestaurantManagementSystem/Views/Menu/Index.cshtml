@@ -1,0 +1,61 @@
+﻿@model List<RestaurantManagementSystem.Models.MenuItem>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Our Menu</h2>
+
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100">
+
+                    <img src="@item.ItemImage"
+                         class="card-img-top"
+                         alt="@item.ItemName"
+                         style="height: 200px; object-fit: cover;" />
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            @item.ItemName
+                        </h5>
+
+                        <p class="card-text">
+                            @item.Description
+                        </p>
+
+                        <p class="fw-bold">
+                            @item.ItemPrice.ToString("0.00") EGP
+                        </p>
+
+                        <p>
+                            <strong>Category:</strong>
+                            @item.Category
+                        </p>
+
+                        @if (item.Availability)
+                        {
+                            <span class="badge bg-success">
+                                Available
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Not Available
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
