@@ -1,0 +1,421 @@
+﻿@model RestaurantManagementSystem.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+
+    /* ================= REGISTER PAGE ================= */
+
+    .register-page {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #0d0d0d;
+    }
+
+
+    /* ================= REGISTER CARD ================= */
+
+    .register-card {
+        width: 100%;
+        max-width: 600px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 16px;
+        padding: 35px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .register-logo {
+        text-align: center;
+        color: #8b0000;
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+
+    .register-title {
+        text-align: center;
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .register-subtitle {
+        text-align: center;
+        color: #777;
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .register-label {
+        color: #ccc;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .register-input {
+        width: 100%;
+        background-color: #0d0d0d;
+        color: white;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        padding: 11px 14px;
+        transition: 0.2s;
+    }
+
+        .register-input::placeholder {
+            color: #666;
+        }
+
+        .register-input:focus {
+            background-color: #0d0d0d;
+            color: white;
+            border-color: #8b0000;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.15);
+        }
+
+    textarea.register-input {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+
+    /* ================= BUTTON ================= */
+
+    .register-btn {
+        width: 100%;
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: 0.2s;
+        margin-top: 10px;
+    }
+
+        .register-btn:hover {
+            background-color: #b22222;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+
+    /* ================= LOGIN ================= */
+
+    .login-text {
+        text-align: center;
+        margin-top: 25px;
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    .login-link {
+        color: #dc3545;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .login-link:hover {
+            color: #ff4d5a;
+            text-decoration: underline;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .validation-summary {
+        background-color: rgba(139, 0, 0, 0.12);
+        border: 1px solid #8b0000;
+        border-radius: 8px;
+        padding: 10px 15px;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+
+    .validation-error {
+        color: #dc3545;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+
+    /* ================= PASSWORD SECTION ================= */
+
+    .password-section {
+        border-top: 1px solid #292929;
+        margin-top: 10px;
+        padding-top: 20px;
+    }
+
+    .section-label {
+        color: #8b0000;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 576px) {
+
+        .register-page {
+            padding: 25px 15px;
+            align-items: flex-start;
+        }
+
+        .register-card {
+            padding: 25px 20px;
+        }
+
+        .register-logo {
+            font-size: 2rem;
+        }
+
+        .register-title {
+            font-size: 1.5rem;
+        }
+    }
+
+</style>
+
+
+<div class="register-page">
+
+    <div class="register-card">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="register-logo">
+            RMS
+        </div>
+
+        <h2 class="register-title">
+            Create Account
+        </h2>
+
+        <p class="register-subtitle">
+            Create your Restaurant Management System account
+        </p>
+
+
+        <!-- ================= FORM ================= -->
+
+        <form asp-action="Register"
+              asp-controller="Account"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- VALIDATION -->
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- ================= PERSONAL INFORMATION ================= -->
+
+            <div class="section-label">
+                Personal Information
+            </div>
+
+
+            <!-- NAME -->
+
+            <div class="mb-3">
+
+                <label asp-for="Name"
+                       class="register-label">
+                    Name
+                </label>
+
+                <input asp-for="Name"
+                       class="register-input"
+                       placeholder="Enter your name"
+                       autocomplete="name" />
+
+                <span asp-validation-for="Name"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="mb-3">
+
+                <label asp-for="Email"
+                       class="register-label">
+                    Email
+                </label>
+
+                <input asp-for="Email"
+                       class="register-input"
+                       placeholder="example@email.com"
+                       autocomplete="email" />
+
+                <span asp-validation-for="Email"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="mb-3">
+
+                <label asp-for="PhoneNumber"
+                       class="register-label">
+                    Phone Number
+                </label>
+
+                <input asp-for="PhoneNumber"
+                       class="register-input"
+                       placeholder="Enter phone number"
+                       autocomplete="tel" />
+
+                <span asp-validation-for="PhoneNumber"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="mb-3">
+
+                <label asp-for="Address"
+                       class="register-label">
+                    Address
+                </label>
+
+                <textarea asp-for="Address"
+                          class="register-input"
+                          rows="3"
+                          placeholder="Enter your address"
+                          autocomplete="street-address"></textarea>
+
+                <span asp-validation-for="Address"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ================= PASSWORD ================= -->
+
+            <div class="password-section">
+
+                <div class="section-label">
+                    Security
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="mb-3">
+
+                    <label asp-for="Password"
+                           class="register-label">
+                        Password
+                    </label>
+
+                    <input asp-for="Password"
+                           class="register-input"
+                           placeholder="Enter password"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="Password"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+
+                <div class="mb-3">
+
+                    <label asp-for="ConfirmPassword"
+                           class="register-label">
+                        Confirm Password
+                    </label>
+
+                    <input asp-for="ConfirmPassword"
+                           class="register-input"
+                           placeholder="Confirm password"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= REGISTER BUTTON ================= -->
+
+            <button type="submit"
+                    class="register-btn">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+
+        <!-- ================= LOGIN LINK ================= -->
+
+        <div class="login-text">
+
+            Already have an account?
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="login-link">
+
+                Login
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

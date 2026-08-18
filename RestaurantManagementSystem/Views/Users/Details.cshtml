@@ -1,69 +1,395 @@
-﻿@model RestaurantManagementSystem.Models.User
+﻿@model RestaurantManagementSystem.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "User Profile";
 }
 
-<div class="container mt-4">
+<div class="rms-page">
 
-    <h2>User Profile</h2>
+    <!-- Header -->
+    <div class="rms-page-header mb-4">
 
-    <hr />
+        <div>
+            <h2 class="rms-title">
+                User Profile
+            </h2>
 
-    <div class="card">
-
-        <div class="card-body">
-
-            <h4 class="card-title">
-                @Model.UserName
-            </h4>
-
-            <hr />
-
-            <p>
-                <strong>Phone:</strong>
-                @Model.UserPhoneNumber
+            <p class="rms-subtitle">
+                View user account information
             </p>
+        </div>
 
-            <p>
-                <strong>Email:</strong>
-                @Model.Email
-            </p>
+        <a asp-action="Index"
+           class="btn btn-outline-light">
+            ← Back to Users
+        </a>
 
-            <p>
-                <strong>Address:</strong>
-                @Model.Address
-            </p>
+    </div>
 
-            <p>
-                <strong>Role:</strong>
-                @Model.Role
-            </p>
 
-            <p>
-                <strong>Branch:</strong>
-                @Model.Branch?.Address
-            </p>
+    <!-- Profile Card -->
+    <div class="rms-card">
 
-            <a asp-action="Edit"
-               asp-route-id="@Model.UserId"
-               class="btn btn-warning">
-                Edit
-            </a>
+        <!-- Profile Header -->
+        <div class="profile-header">
 
-            <a asp-action="AssignRole"
-               asp-route-id="@Model.UserId"
-               class="btn btn-primary">
-                Assign Role
-            </a>
+            <div class="profile-avatar">
+                @(Model.Name?.Substring(0, 1).ToUpper() ?? "U")
+            </div>
 
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Back
-            </a>
+            <div class="profile-info">
+
+                <h3>
+                    @Model.Name
+                </h3>
+
+                <p>
+                    @Model.UserName
+                </p>
+
+                @if (ViewBag.CurrentRole == "Employee")
+                {
+                    <span class="badge bg-danger">
+                        Employee
+                    </span>
+                }
+                else if (ViewBag.CurrentRole == "Customer")
+                {
+                    <span class="badge bg-info">
+                        Customer
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">
+                        @(ViewBag.CurrentRole ?? "No Role")
+                    </span>
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- Details -->
+        <div class="rms-card-body">
+
+            <h5 class="section-title">
+                Account Information
+            </h5>
+
+            <div class="row mt-4">
+
+
+                <!-- Username -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Username
+                        </span>
+
+                        <span class="detail-value">
+                            @(Model.UserName ?? "Not provided")
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Email
+                        </span>
+
+                        <span class="detail-value">
+                            @(Model.Email ?? "Not provided")
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Phone -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Phone
+                        </span>
+
+                        <span class="detail-value">
+                            @(Model.PhoneNumber ?? "Not provided")
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Role -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Role
+                        </span>
+
+                        <span class="detail-value">
+
+                            @(ViewBag.CurrentRole ?? "No Role")
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Address -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Address
+                        </span>
+
+                        <span class="detail-value">
+                            @(Model.Address ?? "Not provided")
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Branch -->
+                <div class="col-md-6 mb-4">
+
+                    <div class="detail-box">
+
+                        <span class="detail-label">
+                            Branch
+                        </span>
+
+                        <span class="detail-value">
+                            @(Model.Branch?.Address ?? "No Branch")
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="profile-actions mt-3">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-rms px-4">
+
+                    Edit Profile
+
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary px-4">
+
+                    Back
+
+                </a>
+
+            </div>
 
         </div>
 
     </div>
 
 </div>
+
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .rms-page {
+        padding: 10px 0 40px;
+        color: white;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .rms-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .rms-title {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .rms-subtitle {
+        color: #777;
+        margin-bottom: 0;
+    }
+
+
+    /* ================= CARD ================= */
+
+    .rms-card {
+        background: #111;
+        border: 1px solid #292929;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,.25);
+    }
+
+
+    /* ================= PROFILE HEADER ================= */
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 30px;
+        background: linear-gradient( 135deg, #151515, #101010 );
+        border-bottom: 1px solid #292929;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #8b0000;
+        color: white;
+        border-radius: 50%;
+        font-size: 32px;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(139,0,0,.3);
+    }
+
+    .profile-info h3 {
+        color: white;
+        margin-bottom: 4px;
+        font-weight: 700;
+    }
+
+    .profile-info p {
+        color: #777;
+        margin-bottom: 8px;
+    }
+
+
+    /* ================= BODY ================= */
+
+    .rms-card-body {
+        padding: 30px;
+    }
+
+    .section-title {
+        color: white;
+        font-weight: 600;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #292929;
+    }
+
+
+    /* ================= DETAILS ================= */
+
+    .detail-box {
+        background: #151515;
+        border: 1px solid #292929;
+        border-radius: 8px;
+        padding: 15px 18px;
+        min-height: 75px;
+        transition: .2s;
+    }
+
+        .detail-box:hover {
+            border-color: #8b0000;
+            transform: translateY(-2px);
+        }
+
+    .detail-label {
+        display: block;
+        color: #777;
+        font-size: .8rem;
+        margin-bottom: 6px;
+    }
+
+    .detail-value {
+        display: block;
+        color: #eee;
+        font-size: 1rem;
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+
+    /* ================= ACTIONS ================= */
+
+    .profile-actions {
+        display: flex;
+        gap: 10px;
+        padding-top: 20px;
+        border-top: 1px solid #292929;
+    }
+
+    .btn-rms {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+    }
+
+        .btn-rms:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .rms-page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .profile-header {
+            padding: 22px;
+        }
+
+        .rms-card-body {
+            padding: 20px;
+        }
+
+        .profile-actions {
+            flex-direction: column;
+        }
+
+            .profile-actions .btn {
+                width: 100%;
+            }
+    }
+
+</style>

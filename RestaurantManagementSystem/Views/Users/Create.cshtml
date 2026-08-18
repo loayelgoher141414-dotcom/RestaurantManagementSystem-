@@ -1,146 +1,390 @@
-﻿@model RestaurantManagementSystem.Models.User
+﻿@model RestaurantManagementSystem.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Add User";
 }
 
-<div class="container mt-4">
+<div class="rms-page">
 
-    <h2>Add User</h2>
+    <!-- Header -->
+    <div class="rms-page-header mb-4">
 
-    <hr />
+        <div>
+            <h2 class="rms-title">
+                Add User
+            </h2>
 
-    <form asp-action="Create" method="post">
-
-        <div asp-validation-summary="All"
-             class="text-danger mb-3">
+            <p class="rms-subtitle">
+                Create a new employee or customer account
+            </p>
         </div>
-
-        <!-- Username -->
-        <div class="mb-3">
-            <label asp-for="UserName" class="form-label">
-                Username
-            </label>
-
-            <input asp-for="UserName"
-                   class="form-control" />
-
-            <span asp-validation-for="UserName"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <!-- Phone -->
-        <div class="mb-3">
-            <label asp-for="UserPhoneNumber"
-                   class="form-label">
-                Phone Number
-            </label>
-
-            <input asp-for="UserPhoneNumber"
-                   class="form-control" />
-
-            <span asp-validation-for="UserPhoneNumber"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <!-- Email -->
-        <div class="mb-3">
-            <label asp-for="Email"
-                   class="form-label">
-                Email
-            </label>
-
-            <input asp-for="Email"
-                   class="form-control" />
-
-            <span asp-validation-for="Email"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <!-- Address -->
-        <div class="mb-3">
-            <label asp-for="Address"
-                   class="form-label">
-                Address
-            </label>
-
-            <textarea asp-for="Address"
-                      class="form-control"></textarea>
-
-            <span asp-validation-for="Address"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <!-- Role -->
-        <div class="mb-3">
-            <label asp-for="Role"
-                   class="form-label">
-                Role
-            </label>
-
-            <select asp-for="Role"
-                    class="form-select">
-
-                <option value="">
-                    -- Select Role --
-                </option>
-
-                @foreach (var role in ViewBag.Roles)
-                {
-                    <option value="@role">
-                        @role
-                    </option>
-                }
-
-            </select>
-
-            <span asp-validation-for="Role"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <!-- Branch -->
-        <div class="mb-3">
-            <label asp-for="BranchId"
-                   class="form-label">
-                Branch
-            </label>
-
-            <select asp-for="BranchId"
-                    class="form-select">
-
-                <option value="0">
-                    -- Select Branch --
-                </option>
-
-                @foreach (var branch in ViewBag.Branches)
-                {
-                    <option value="@branch.BranchId">
-                        @branch.Address
-                    </option>
-                }
-
-            </select>
-
-            <span asp-validation-for="BranchId"
-                  class="text-danger">
-            </span>
-        </div>
-
-        <button type="submit"
-                class="btn btn-success">
-            Add User
-        </button>
 
         <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
+           class="btn btn-outline-light">
+            ← Back to Users
         </a>
 
-    </form>
+    </div>
+
+
+    <!-- Form Card -->
+    <div class="rms-card">
+
+        <div class="rms-card-header">
+
+            <div>
+                <h5 class="mb-1 text-white">
+                    User Information
+                </h5>
+
+                <small class="text-secondary">
+                    Enter the user's account details
+                </small>
+            </div>
+
+        </div>
+
+
+        <div class="rms-card-body">
+
+            <form asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <!-- Validation -->
+                <div asp-validation-summary="All"
+                     class="alert alert-danger mb-4">
+                </div>
+
+
+                <div class="row">
+
+
+                    <!-- Name -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Name"
+                               class="form-label rms-label">
+                            Name
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control rms-input"
+                               placeholder="Enter full name" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Email"
+                               class="form-label rms-label">
+                            Email
+                        </label>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control rms-input"
+                               placeholder="example@email.com" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="PhoneNumber"
+                               class="form-label rms-label">
+                            Phone Number
+                        </label>
+
+                        <input asp-for="PhoneNumber"
+                               class="form-control rms-input"
+                               placeholder="Enter phone number" />
+
+                        <span asp-validation-for="PhoneNumber"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="col-md-6 mb-3">
+
+                        <label for="password"
+                               class="form-label rms-label">
+                            Password
+                        </label>
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-control rms-input"
+                               placeholder="Enter password"
+                               autocomplete="new-password" />
+
+                    </div>
+
+
+                    <!-- Address -->
+                    <div class="col-12 mb-3">
+
+                        <label asp-for="Address"
+                               class="form-label rms-label">
+                            Address
+                        </label>
+
+                        <textarea asp-for="Address"
+                                  class="form-control rms-input"
+                                  rows="3"
+                                  placeholder="Enter user address"></textarea>
+
+                        <span asp-validation-for="Address"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Role -->
+                    <div class="col-md-6 mb-3">
+
+                        <label for="role"
+                               class="form-label rms-label">
+                            Role
+                        </label>
+
+                        <select id="role"
+                                name="role"
+                                class="form-select rms-input">
+
+                            <option value="">
+                                -- Select Role --
+                            </option>
+
+                            @foreach (var role in ViewBag.Roles)
+                            {
+                                <option value="@role">
+                                    @role
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Branch -->
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="BranchId"
+                               class="form-label rms-label">
+                            Branch
+                        </label>
+
+                        <select asp-for="BranchId"
+                                class="form-select rms-input">
+
+                            <option value="">
+                                -- Select Branch --
+                            </option>
+
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                <option value="@branch.BranchId">
+                                    @branch.Address
+                                </option>
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="BranchId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="rms-form-actions mt-4">
+
+                    <button type="submit"
+                            class="btn btn-rms px-4">
+                        Add User
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
 
 </div>
+
+
+<style>
+
+    /* ================= RMS PAGE ================= */
+
+    .rms-page {
+        padding: 10px 0 40px;
+        color: white;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .rms-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .rms-title {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .rms-subtitle {
+        color: #777;
+        margin-bottom: 0;
+    }
+
+
+    /* ================= CARD ================= */
+
+    .rms-card {
+        background: #111;
+        border: 1px solid #292929;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,.25);
+    }
+
+    .rms-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #292929;
+        background: #151515;
+    }
+
+    .rms-card-body {
+        padding: 25px;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .rms-label {
+        color: #ddd;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .rms-input {
+        background-color: #181818 !important;
+        border: 1px solid #3a3a3a !important;
+        color: white !important;
+        min-height: 45px;
+    }
+
+        .rms-input::placeholder {
+            color: #666;
+        }
+
+        .rms-input:focus {
+            background-color: #1b1b1b !important;
+            border-color: #8b0000 !important;
+            box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, .20) !important;
+            color: white !important;
+        }
+
+    select.rms-input option {
+        background: #181818;
+        color: white;
+    }
+
+    textarea.rms-input {
+        min-height: 100px;
+    }
+
+
+    /* ================= BUTTONS ================= */
+
+    .rms-form-actions {
+        display: flex;
+        gap: 10px;
+        padding-top: 20px;
+        border-top: 1px solid #292929;
+    }
+
+    .btn-rms {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+    }
+
+        .btn-rms:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .text-danger {
+        font-size: .875rem;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .rms-page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rms-card-body {
+            padding: 18px;
+        }
+
+        .rms-form-actions {
+            flex-direction: column;
+        }
+
+            .rms-form-actions .btn {
+                width: 100%;
+            }
+    }
+
+</style>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

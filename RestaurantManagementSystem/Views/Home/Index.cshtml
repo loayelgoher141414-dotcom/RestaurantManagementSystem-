@@ -1,8 +1,701 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (User.Identity != null &&
+     User.Identity.IsAuthenticated &&
+     User.IsInRole("Customer"))
+{
+    <!-- =========================
+         CUSTOMER HOME
+    ========================== -->
+
+    <style>
+
+        /* =========================================
+                   CUSTOMER HOME
+                ========================================= */
+
+        .customer-home {
+            background: #0d0d0d;
+            color: white;
+            min-height: calc(100vh - 65px);
+        }
+
+
+        /* =========================================
+                   HERO CAROUSEL
+                ========================================= */
+
+        .customer-carousel {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 65px);
+            min-height: 600px;
+            overflow: hidden;
+            background: #111;
+        }
+
+
+            .customer-carousel .carousel-inner {
+                height: 100%;
+            }
+
+
+            .customer-carousel .carousel-item {
+                height: 100%;
+                position: relative;
+            }
+
+
+                .customer-carousel .carousel-item img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transform: scale(1.02);
+                    transition: transform 6s ease;
+                }
+
+
+                .customer-carousel .carousel-item.active img {
+                    transform: scale(1.08);
+                }
+
+
+                /* Dark overlay */
+
+                .customer-carousel .carousel-item::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: 1;
+                    background: linear-gradient( 90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.15) 100% );
+                }
+
+
+                .customer-carousel .carousel-item::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 35%;
+                    z-index: 1;
+                    background: linear-gradient( to top, rgba(13,13,13,0.95), transparent );
+                }
+
+
+            /* =========================================
+                   CAPTION
+                ========================================= */
+
+            .customer-carousel .carousel-caption {
+                z-index: 3;
+                left: 8%;
+                right: auto;
+                bottom: 25%;
+                width: min(650px, 80%);
+                text-align: left;
+                padding: 0;
+            }
+
+
+        .hero-small-title {
+            display: inline-block;
+            color: #d4a017;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            position: relative;
+            padding-left: 45px;
+        }
+
+
+            .hero-small-title::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 32px;
+                height: 2px;
+                background: #8b0000;
+            }
+
+
+        .customer-carousel .carousel-caption h2 {
+            font-size: clamp(42px, 6vw, 78px);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 22px;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.7);
+        }
+
+
+            .customer-carousel .carousel-caption h2 span {
+                color: #8b0000;
+            }
+
+
+        .customer-carousel .carousel-caption p {
+            font-size: 19px;
+            color: #ddd;
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================================
+                   HERO BUTTONS
+                ========================================= */
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+
+        .hero-order-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 28px;
+            background: #8b0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: 600;
+            border: 1px solid #8b0000;
+            transition: all 0.25s ease;
+        }
+
+
+            .hero-order-btn:hover {
+                background: #b22222;
+                border-color: #b22222;
+                color: white;
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(139,0,0,0.35);
+            }
+
+
+        .hero-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 28px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(8px);
+            transition: all 0.25s ease;
+        }
+
+
+            .hero-menu-btn:hover {
+                background: rgba(255,255,255,0.15);
+                color: white;
+                border-color: rgba(255,255,255,0.6);
+                transform: translateY(-3px);
+            }
+
+
+        /* =========================================
+                   CAROUSEL INDICATORS
+                ========================================= */
+
+        .customer-carousel .carousel-indicators {
+            z-index: 5;
+            justify-content: flex-start;
+            left: 8%;
+            bottom: 35px;
+            margin-left: 0;
+            margin-right: 0;
+            width: auto;
+        }
+
+
+            .customer-carousel .carousel-indicators button {
+                width: 28px;
+                height: 3px;
+                border: none;
+                margin-right: 8px;
+                background-color: rgba(255,255,255,0.4);
+                transition: all 0.3s ease;
+            }
+
+
+                .customer-carousel .carousel-indicators button.active {
+                    width: 55px;
+                    background-color: #8b0000;
+                }
+
+
+        /* =========================================
+                   ARROWS
+                ========================================= */
+
+        .customer-carousel .carousel-control-prev,
+        .customer-carousel .carousel-control-next {
+            z-index: 5;
+            width: 60px;
+            opacity: 0;
+            transition: 0.3s ease;
+        }
+
+
+        .customer-carousel:hover .carousel-control-prev,
+        .customer-carousel:hover .carousel-control-next {
+            opacity: 0.8;
+        }
+
+
+        .customer-carousel .carousel-control-prev-icon,
+        .customer-carousel .carousel-control-next-icon {
+            width: 38px;
+            height: 38px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            background-size: 45%;
+        }
+
+
+        /* =========================================
+                   WELCOME BADGE
+                ========================================= */
+
+        .customer-welcome-badge {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 5;
+            padding: 9px 16px;
+            border-radius: 30px;
+            background: rgba(17,17,17,0.65);
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: #ddd;
+            font-size: 13px;
+        }
+
+
+            .customer-welcome-badge strong {
+                color: #8b0000;
+            }
+
+
+        /* =========================================
+                   DECORATIVE LINE
+                ========================================= */
+
+        .hero-decoration {
+            position: absolute;
+            z-index: 4;
+            right: 8%;
+            bottom: 30%;
+            width: 1px;
+            height: 180px;
+            background: linear-gradient( to bottom, transparent, rgba(255,255,255,0.35), transparent );
+        }
+
+
+        /* =========================================
+                   MOBILE
+                ========================================= */
+
+        @@media (max-width: 768px) {
+
+            .customer-carousel {
+                height: calc(100vh - 65px);
+                min-height: 550px;
+            }
+
+
+                .customer-carousel .carousel-item::before {
+                    background: linear-gradient( 90deg, rgba(0,0,0,0.88), rgba(0,0,0,0.45) );
+                }
+
+
+                .customer-carousel .carousel-caption {
+                    left: 25px;
+                    right: 25px;
+                    bottom: 20%;
+                    width: auto;
+                }
+
+
+            .hero-small-title {
+                font-size: 11px;
+                letter-spacing: 3px;
+                margin-bottom: 12px;
+            }
+
+
+            .customer-carousel .carousel-caption h2 {
+                font-size: 40px;
+                margin-bottom: 15px;
+            }
+
+
+            .customer-carousel .carousel-caption p {
+                font-size: 16px;
+                line-height: 1.6;
+                margin-bottom: 22px;
+            }
+
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .hero-order-btn,
+            .hero-menu-btn {
+                width: 190px;
+                text-align: center;
+            }
+
+
+            .customer-carousel .carousel-indicators {
+                left: 25px;
+                bottom: 25px;
+            }
+
+
+            .customer-welcome-badge {
+                top: 20px;
+                right: 20px;
+                font-size: 11px;
+                padding: 7px 12px;
+            }
+
+
+            .hero-decoration {
+                display: none;
+            }
+        }
+
+    </style>
+
+
+    <!-- =========================
+         CUSTOMER HOME
+    ========================== -->
+
+    <div class="customer-home">
+
+
+        <!-- =========================
+             HERO CAROUSEL
+        ========================== -->
+
+        <div id="restaurantCarousel"
+             class="carousel slide customer-carousel"
+             data-bs-ride="carousel"
+             data-bs-interval="4500">
+
+
+            <!-- Welcome Badge -->
+
+            <div class="customer-welcome-badge">
+
+                Welcome back,
+                <strong>@User.Identity!.Name</strong>
+
+            </div>
+
+
+            <!-- Decorative Line -->
+
+            <div class="hero-decoration"></div>
+
+
+            <!-- Indicators -->
+
+            <div class="carousel-indicators">
+
+                <button type="button"
+                        data-bs-target="#restaurantCarousel"
+                        data-bs-slide-to="0"
+                        class="active"
+                        aria-current="true">
+                </button>
+
+                <button type="button"
+                        data-bs-target="#restaurantCarousel"
+                        data-bs-slide-to="1">
+                </button>
+
+                <button type="button"
+                        data-bs-target="#restaurantCarousel"
+                        data-bs-slide-to="2">
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 SLIDES
+            ========================== -->
+
+            <div class="carousel-inner">
+
+
+                <!-- =========================
+                     SLIDE 1
+                ========================== -->
+
+                <div class="carousel-item active">
+
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1920&q=85"
+                         class="d-block w-100"
+                         alt="Restaurant Pizza">
+
+
+                    <div class="carousel-caption">
+
+                        <div class="hero-small-title">
+                            Welcome to RMS
+                        </div>
+
+                        <h2>
+                            Taste the
+                            <span>Difference.</span>
+                        </h2>
+
+                        <p>
+                            Discover delicious meals prepared with
+                            fresh ingredients and served with passion.
+                        </p>
+
+
+                        <div class="hero-actions">
+
+                            <a asp-controller="Order"
+                               asp-action="AddOrder"
+                               class="hero-order-btn">
+
+                                Order Now
+
+                            </a>
+
+
+                            <a asp-controller="Menu"
+                               asp-action="Index"
+                               class="hero-menu-btn">
+
+                                Explore Menu
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SLIDE 2
+                ========================== -->
+
+                <div class="carousel-item">
+
+                    <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=1920&q=85"
+                         class="d-block w-100"
+                         alt="Fresh Food">
+
+
+                    <div class="carousel-caption">
+
+                        <div class="hero-small-title">
+                            Fresh Ingredients
+                        </div>
+
+                        <h2>
+                            Fresh.
+                            <span>Simple.</span>
+                            Delicious.
+                        </h2>
+
+                        <p>
+                            Every dish is carefully prepared to give
+                            you an unforgettable dining experience.
+                        </p>
+
+
+                        <div class="hero-actions">
+
+                            <a asp-controller="Order"
+                               asp-action="AddOrder"
+                               class="hero-order-btn">
+
+                                Order Your Meal
+
+                            </a>
+
+
+                            <a asp-controller="Menu"
+                               asp-action="Index"
+                               class="hero-menu-btn">
+
+                                View Menu
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     SLIDE 3
+                ========================== -->
+
+                <div class="carousel-item">
+
+                    <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=1920&q=85"
+                         class="d-block w-100"
+                         alt="Restaurant Burger">
+
+
+                    <div class="carousel-caption">
+
+                        <div class="hero-small-title">
+                            Your Table Awaits
+                        </div>
+
+                        <h2>
+                            Good Food.
+                            <span>Good Mood.</span>
+                        </h2>
+
+                        <p>
+                            Browse our menu, choose your favorite dishes
+                            and place your order in just a few clicks.
+                        </p>
+
+
+                        <div class="hero-actions">
+
+                            <a asp-controller="Order"
+                               asp-action="AddOrder"
+                               class="hero-order-btn">
+
+                                Start Ordering
+
+                            </a>
+
+
+                            <a asp-controller="Order"
+                               asp-action="Index"
+                               class="hero-menu-btn">
+
+                                My Orders
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 PREVIOUS
+            ========================== -->
+
+            <button class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#restaurantCarousel"
+                    data-bs-slide="prev">
+
+                <span class="carousel-control-prev-icon"></span>
+
+                <span class="visually-hidden">
+                    Previous
+                </span>
+
+            </button>
+
+
+            <!-- =========================
+                 NEXT
+            ========================== -->
+
+            <button class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#restaurantCarousel"
+                    data-bs-slide="next">
+
+                <span class="carousel-control-next-icon"></span>
+
+                <span class="visually-hidden">
+                    Next
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+}
+
+else
+{
+    <!-- =========================
+         GUEST
+    ========================== -->
+
+    <div class="guest-welcome">
+
+        <div class="guest-content">
+
+            <h1>
+                Welcome to Our Restaurant
+            </h1>
+
+            <p>
+                Discover delicious meals, explore our menu,
+                and enjoy a seamless dining experience with RMS.
+            </p>
+
+            <div class="guest-buttons">
+
+                <a asp-controller="Account"
+                   asp-action="Login"
+                   class="btn btn-primary">
+
+                    Login
+
+                </a>
+
+                <a asp-controller="Account"
+                   asp-action="Register"
+                   class="btn btn-outline-light">
+
+                    Create Account
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+}

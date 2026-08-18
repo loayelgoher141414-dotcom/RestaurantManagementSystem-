@@ -1,0 +1,269 @@
+﻿@model RestaurantManagementSystem.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Delete Menu Item";
+}
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .delete-menu-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 4%;
+        background-color: #0d0d0d;
+        color: white;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .delete-header {
+        margin-bottom: 25px;
+    }
+
+        .delete-header h2 {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .delete-header p {
+            color: #777;
+            margin: 0;
+        }
+
+
+    /* ================= DELETE CARD ================= */
+
+    .delete-card {
+        max-width: 750px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* ================= WARNING ================= */
+
+    .delete-warning {
+        background-color: rgba(139, 0, 0, 0.12);
+        border: 1px solid rgba(139, 0, 0, 0.5);
+        border-radius: 10px;
+        padding: 15px 18px;
+        color: #ffb3b3;
+        margin-bottom: 25px;
+    }
+
+        .delete-warning strong {
+            color: #ff6b6b;
+        }
+
+
+    /* ================= ITEM INFO ================= */
+
+    .item-info {
+        background-color: #181818;
+        border: 1px solid #2c2c2c;
+        border-radius: 10px;
+        padding: 22px;
+        margin-bottom: 25px;
+    }
+
+        .item-info h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .item-info p {
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+            .item-info p:last-child {
+                margin-bottom: 0;
+            }
+
+        .item-info strong {
+            color: #ddd;
+        }
+
+    .item-price {
+        color: #8b0000 !important;
+        font-weight: 700;
+    }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-delete {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 7px;
+        transition: 0.2s;
+    }
+
+        .btn-delete:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+    .btn-cancel {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #444;
+        padding: 10px 22px;
+        border-radius: 7px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background-color: #222;
+            color: white;
+            border-color: #666;
+        }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .delete-menu-page {
+            padding: 25px 15px;
+        }
+
+        .delete-card {
+            padding: 20px;
+        }
+    }
+
+</style>
+
+
+<div class="delete-menu-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="delete-header">
+
+        <h2>
+            Delete Menu Item
+        </h2>
+
+        <p>
+            Review the item before deleting it.
+        </p>
+
+    </div>
+
+
+    <!-- ================= CARD ================= -->
+
+    <div class="delete-card">
+
+
+        <!-- WARNING -->
+
+        <div class="delete-warning">
+
+            <strong>Warning:</strong>
+
+            Are you sure you want to permanently delete this menu item?
+
+        </div>
+
+
+        <!-- ITEM INFORMATION -->
+
+        <div class="item-info">
+
+            <h4>
+                @Model.ItemName
+            </h4>
+
+
+            <p>
+
+                <strong>
+                    Price:
+                </strong>
+
+                <span class="item-price">
+
+                    @Model.ItemPrice.ToString("0.00") EGP
+
+                </span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Category:
+                </strong>
+
+                @Model.Category
+
+            </p>
+
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+
+                <p>
+
+                    <strong>
+                        Description:
+                    </strong>
+
+                    @Model.Description
+
+                </p>
+
+            }
+
+        </div>
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <form asp-action="Delete"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.ItemId" />
+
+
+            <div class="d-flex gap-2">
+
+                <button type="submit"
+                        class="btn-delete">
+
+                    Yes, Delete
+
+                </button>
+
+
+                <a asp-action="Index"
+                   class="btn-cancel">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

@@ -4,33 +4,301 @@
     ViewData["Title"] = "Edit Branch";
 }
 
-<h1>Edit Branch</h1>
+<style>
 
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BranchId" />
-            <input type="hidden" asp-for="ManagerId" />
+    /* ================= EDIT PAGE ================= */
 
-            <div class="form-group mb-3">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
+    .branch-edit-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 5%;
+        background-color: #0d0d0d;
+        color: white;
+    }
 
-            <div class="form-group mb-3">
-                <label asp-for="BranchPhoneNumber" class="control-label"></label>
-                <input asp-for="BranchPhoneNumber" class="form-control" />
-                <span asp-validation-for="BranchPhoneNumber" class="text-danger"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
-        </form>
+    /* ================= HEADER ================= */
+
+    .edit-header {
+        margin-bottom: 30px;
+    }
+
+        .edit-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .edit-header p {
+            color: #777;
+            margin: 0;
+        }
+
+
+    /* ================= CARD ================= */
+
+    .edit-card {
+        max-width: 650px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* ================= FORM ================= */
+
+    .edit-label {
+        display: block;
+        color: #ccc;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .edit-input {
+        width: 100%;
+        background-color: #0d0d0d;
+        color: white;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        padding: 11px 14px;
+        transition: 0.2s;
+    }
+
+        .edit-input::placeholder {
+            color: #666;
+        }
+
+        .edit-input:focus {
+            background-color: #0d0d0d;
+            color: white;
+            border-color: #8b0000;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.15);
+        }
+
+
+    /* ================= BRANCH ID ================= */
+
+    .branch-id-box {
+        background-color: #191919;
+        border: 1px solid #292929;
+        border-radius: 8px;
+        padding: 12px 14px;
+        color: #8b0000;
+        font-weight: 600;
+    }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-save-edit {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        padding: 10px 22px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-save-edit:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+    .btn-back-edit {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #444;
+        border-radius: 7px;
+        padding: 10px 22px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back-edit:hover {
+            background-color: #222;
+            color: white;
+            border-color: #666;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .validation-summary {
+        background-color: rgba(139, 0, 0, 0.12);
+        border: 1px solid #8b0000;
+        border-radius: 8px;
+        padding: 10px 15px;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+
+    .validation-error {
+        display: block;
+        color: #dc3545;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .branch-edit-page {
+            padding: 25px 15px;
+        }
+
+        .edit-card {
+            padding: 22px;
+        }
+
+        .edit-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .edit-actions button,
+            .edit-actions a {
+                width: 100%;
+                text-align: center;
+            }
+    }
+
+</style>
+
+
+<div class="branch-edit-page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="edit-header">
+
+        <h2>
+            Edit Branch
+        </h2>
+
+        <p>
+            Update the information of this restaurant branch.
+        </p>
+
     </div>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="edit-card">
+
+        <form asp-action="Edit"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   asp-for="BranchId" />
+
+
+            <!-- VALIDATION -->
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- ================= BRANCH ID ================= -->
+
+            <div class="mb-4">
+
+                <label class="edit-label">
+                    Branch ID
+                </label>
+
+                <div class="branch-id-box">
+                    #@Model.BranchId
+                </div>
+
+            </div>
+
+
+            <!-- ================= ADDRESS ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="Address"
+                       class="edit-label">
+
+                    Branch Address
+
+                </label>
+
+                <input asp-for="Address"
+                       class="edit-input"
+                       placeholder="Enter branch address" />
+
+                <span asp-validation-for="Address"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ================= PHONE ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="BranchPhoneNumber"
+                       class="edit-label">
+
+                    Branch Phone Number
+
+                </label>
+
+                <input asp-for="BranchPhoneNumber"
+                       class="edit-input"
+                       placeholder="Enter branch phone number" />
+
+                <span asp-validation-for="BranchPhoneNumber"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ================= ACTIONS ================= -->
+
+            <div class="edit-actions d-flex gap-2">
+
+                <button type="submit"
+                        class="btn-save-edit">
+
+                    Save Changes
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-back-edit">
+
+                    Back to Branches
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

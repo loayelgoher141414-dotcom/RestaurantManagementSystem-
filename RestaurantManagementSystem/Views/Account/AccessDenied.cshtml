@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="rms-page">
+
+    <div class="access-denied">
+
+        <div class="access-icon">
+            !
+        </div>
+
+        <span class="access-label">
+            ACCESS CONTROL
+        </span>
+
+        <h1>
+            Access Denied
+        </h1>
+
+        <p>
+            You don't have permission to access this page.
+        </p>
+
+        <div class="access-actions">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="rms-btn rms-btn-primary">
+                Back to Home
+            </a>
+
+            <a href="javascript:history.back()"
+               class="rms-btn rms-btn-secondary">
+                Go Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .rms-page {
+        width: 100%;
+        min-height: 70vh;
+        padding: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .access-denied {
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+        background: #151515;
+        border: 1px solid #292929;
+        border-radius: 16px;
+        padding: 55px 35px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .access-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(176, 0, 32, 0.12);
+        border: 1px solid rgba(176, 0, 32, 0.4);
+        color: #ff5c5c;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .access-label {
+        color: #b00020;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .access-denied h1 {
+        color: #fff;
+        font-size: 34px;
+        font-weight: 700;
+        margin: 8px 0 10px;
+    }
+
+    .access-denied p {
+        color: #888;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .access-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .rms-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 22px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .rms-btn-primary {
+        background: #b00020;
+        color: #fff;
+    }
+
+        .rms-btn-primary:hover {
+            background: #8f001a;
+            color: #fff;
+        }
+
+    .rms-btn-secondary {
+        background: #292929;
+        color: #ddd;
+    }
+
+        .rms-btn-secondary:hover {
+            background: #383838;
+            color: #fff;
+        }
+
+
+    @@media (max-width: 600px) {
+
+        .rms-page {
+            padding: 20px;
+        }
+
+        .access-denied {
+            padding: 40px 20px;
+        }
+
+            .access-denied h1 {
+                font-size: 28px;
+            }
+
+        .access-actions {
+            flex-direction: column;
+        }
+
+        .rms-btn {
+            width: 100%;
+        }
+    }
+
+</style>

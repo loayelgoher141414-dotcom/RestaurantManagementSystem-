@@ -1,110 +1,571 @@
-﻿@model IEnumerable<RestaurantManagementSystem.Models.User>
+﻿@model IEnumerable<RestaurantManagementSystem.Models.ApplicationUser>
 
 @{
     ViewData["Title"] = "Users";
+    var userRoles = ViewBag.UserRoles as Dictionary<int, string>;
 }
 
-<div class="container mt-4">
+<div class="rms-page">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Users</h2>
+    <div class="rms-header">
 
-        <a asp-action="Create" class="btn btn-primary">
-            Add User
+        <div>
+            <span class="rms-label">USER MANAGEMENT</span>
+
+            <h1>Users</h1>
+
+            <p>Manage restaurant employees and customers</p>
+        </div>
+
+        <a asp-action="Create"
+           class="rms-btn rms-btn-primary">
+            + Add User
         </a>
+
     </div>
+
+
+    <!-- Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="rms-alert rms-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="rms-alert rms-danger">
+            @TempData["Error"]
+        </div>
+    }
+
 
     @if (!Model.Any())
     {
-        <div class="alert alert-info">
-            No users found.
+        <div class="rms-empty">
+
+            <h3>No Users Found</h3>
+
+            <p>
+                There are currently no users in the system.
+            </p>
+
+            <a asp-action="Create"
+               class="rms-btn rms-btn-primary">
+                + Add First User
+            </a>
+
         </div>
     }
     else
     {
-        <div class="table-responsive">
+        <div class="rms-table-card">
 
-            <table class="table table-bordered table-hover align-middle">
+            <div class="rms-table-header">
 
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Branch</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+                <div>
+                    <h3>All Users</h3>
 
-                <tbody>
+                    <span>
+                        @Model.Count() Users
+                    </span>
+                </div>
 
-                    @foreach (var user in Model)
-                    {
+            </div>
+
+
+            <div class="rms-table-wrapper">
+
+                <table class="rms-table">
+
+                    <thead>
+
                         <tr>
-
-                            <td>
-                                @user.UserName
-                            </td>
-
-                            <td>
-                                @user.UserPhoneNumber
-                            </td>
-
-                            <td>
-                                @user.Email
-                            </td>
-
-                            <td>
-                                @user.Role
-                            </td>
-
-                            <td>
-                                @user.Branch?.Address
-                            </td>
-
-                            <td>
-                                <div class="d-flex gap-2 flex-wrap">
-
-                                    <!-- View Profile -->
-                                    <a asp-action="Details"
-                                       asp-route-id="@user.UserId"
-                                       class="btn btn-info btn-sm">
-                                        Profile
-                                    </a>
-
-                                    <!-- Edit User -->
-                                    <a asp-action="Edit"
-                                       asp-route-id="@user.UserId"
-                                       class="btn btn-warning btn-sm">
-                                        Edit
-                                    </a>
-
-                                    <!-- Assign Role -->
-                                    <a asp-action="AssignRole"
-                                       asp-route-id="@user.UserId"
-                                       class="btn btn-primary btn-sm">
-                                        Assign Role
-                                    </a>
-
-                                    <!-- Delete User -->
-                                    <a asp-action="Delete"
-                                       asp-route-id="@user.UserId"
-                                       class="btn btn-danger btn-sm">
-                                        Delete
-                                    </a>
-
-                                </div>
-                            </td>
-
+                            <th>User</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Branch</th>
+                            <th class="actions-column">
+                                Actions
+                            </th>
                         </tr>
-                    }
 
-                </tbody>
+                    </thead>
 
-            </table>
+
+                    <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+
+                                <!-- User -->
+
+                                <td>
+
+                                    <div class="user-info">
+
+                                        <div class="user-avatar">
+                                            @(string.IsNullOrEmpty(user.Name)
+                                                ? "U"
+                                                : user.Name.Substring(0, 1).ToUpper())
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                @user.Name
+                                            </strong>
+
+                                            <small>
+                                                ID: @user.Id
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Phone -->
+
+                                <td>
+                                    @(user.PhoneNumber ?? "N/A")
+                                </td>
+
+
+                                <!-- Email -->
+
+                                <td>
+                                    @(user.Email ?? "N/A")
+                                </td>
+
+
+                                <!-- Role -->
+
+                                <td>
+
+                                    @if (userRoles != null &&
+                                         userRoles.ContainsKey(user.Id))
+                                    {
+                                        var role = userRoles[user.Id];
+
+                                        if (role == "Employee")
+                                        {
+                                            <span class="role-badge employee">
+                                                Employee
+                                            </span>
+                                        }
+                                        else if (role == "Customer")
+                                        {
+                                            <span class="role-badge customer">
+                                                Customer
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="role-badge">
+                                                @role
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="role-badge none">
+                                            No Role
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Branch -->
+
+                                <td>
+
+                                    @if (user.Branch != null)
+                                    {
+                                        <span class="branch-name">
+                                            @user.Branch.Address
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="no-data">
+                                            No Branch
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Actions -->
+
+                                <td>
+
+                                    <div class="user-actions">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@user.Id"
+                                           class="action-btn profile">
+                                            Profile
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@user.Id"
+                                           class="action-btn edit">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@user.Id"
+                                           class="action-btn delete">
+                                            Delete
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
     }
 
 </div>
+
+
+<style>
+
+    .rms-page {
+        width: 100%;
+        padding: 35px;
+    }
+
+
+    /* Header */
+
+    .rms-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .rms-label {
+        color: #b00020;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .rms-header h1 {
+        color: #fff;
+        font-size: 32px;
+        margin: 5px 0;
+        font-weight: 700;
+    }
+
+    .rms-header p {
+        color: #888;
+        margin: 0;
+    }
+
+
+    /* Buttons */
+
+    .rms-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+        border: none;
+    }
+
+    .rms-btn-primary {
+        background: #b00020;
+        color: #fff;
+    }
+
+        .rms-btn-primary:hover {
+            background: #8f001a;
+            color: #fff;
+        }
+
+
+    /* Alerts */
+
+    .rms-alert {
+        padding: 14px 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .rms-success {
+        background: rgba(25, 135, 84, 0.12);
+        border: 1px solid rgba(25, 135, 84, 0.4);
+        color: #55d99b;
+    }
+
+    .rms-danger {
+        background: rgba(176, 0, 32, 0.12);
+        border: 1px solid rgba(176, 0, 32, 0.4);
+        color: #ff6b6b;
+    }
+
+
+    /* Table Card */
+
+    .rms-table-card {
+        background: #151515;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .rms-table-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #292929;
+    }
+
+        .rms-table-header h3 {
+            display: inline;
+            color: #fff;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        .rms-table-header span {
+            color: #888;
+            font-size: 13px;
+        }
+
+
+    /* Table */
+
+    .rms-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .rms-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 900px;
+    }
+
+        .rms-table th {
+            background: #101010;
+            color: #999;
+            padding: 15px 18px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            border-bottom: 1px solid #292929;
+        }
+
+        .rms-table td {
+            padding: 16px 18px;
+            color: #ddd;
+            border-bottom: 1px solid #242424;
+            font-size: 14px;
+        }
+
+        .rms-table tbody tr {
+            transition: 0.2s;
+        }
+
+            .rms-table tbody tr:hover {
+                background: #1c1c1c;
+            }
+
+            .rms-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+
+    /* User */
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #b00020;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .user-info strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 3px;
+    }
+
+    .user-info small {
+        color: #666;
+        font-size: 11px;
+    }
+
+
+    /* Role */
+
+    .role-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        background: #333;
+        color: #ddd;
+    }
+
+        .role-badge.employee {
+            background: rgba(176, 0, 32, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(176, 0, 32, 0.3);
+        }
+
+        .role-badge.customer {
+            background: rgba(25, 135, 84, 0.15);
+            color: #55d99b;
+            border: 1px solid rgba(25, 135, 84, 0.3);
+        }
+
+        .role-badge.none {
+            color: #777;
+        }
+
+
+    /* Branch */
+
+    .branch-name {
+        color: #ddd;
+    }
+
+    .no-data {
+        color: #666;
+        font-style: italic;
+    }
+
+
+    /* Actions */
+
+    .actions-column {
+        text-align: right !important;
+    }
+
+    .user-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        padding: 7px 11px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .action-btn.profile {
+            background: #222;
+            color: #ddd;
+            border: 1px solid #3a3a3a;
+        }
+
+            .action-btn.profile:hover {
+                background: #333;
+                color: white;
+            }
+
+        .action-btn.edit {
+            background: rgba(255, 193, 7, 0.12);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.25);
+        }
+
+            .action-btn.edit:hover {
+                background: rgba(255, 193, 7, 0.2);
+            }
+
+        .action-btn.delete {
+            background: rgba(176, 0, 32, 0.12);
+            color: #ff6b6b;
+            border: 1px solid rgba(176, 0, 32, 0.25);
+        }
+
+            .action-btn.delete:hover {
+                background: rgba(176, 0, 32, 0.22);
+            }
+
+
+    /* Empty */
+
+    .rms-empty {
+        text-align: center;
+        background: #151515;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 60px 20px;
+    }
+
+        .rms-empty h3 {
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .rms-empty p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+
+    /* Responsive */
+
+    @@media (max-width: 800px) {
+
+        .rms-page {
+            padding: 20px;
+        }
+
+        .rms-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .rms-btn-primary {
+            width: 100%;
+        }
+    }
+
+</style>

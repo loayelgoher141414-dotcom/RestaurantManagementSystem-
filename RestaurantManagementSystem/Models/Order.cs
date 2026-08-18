@@ -10,7 +10,7 @@ namespace RestaurantManagementSystem.Models
         [Required(ErrorMessage = "User is required")]
         public int UserId { get; set; }
 
-        public User User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         [Required(ErrorMessage = "Total price is required")]
         [Range(0.01, 10000000,
@@ -29,6 +29,7 @@ namespace RestaurantManagementSystem.Models
 
         public Branch Branch { get; set; } = null!;
 
-        public ICollection<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
+        public ICollection<OrderItem> OrderItems { get; set; }
+            = new List<OrderItem>();
     }
 }

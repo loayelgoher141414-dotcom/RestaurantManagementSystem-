@@ -1,31 +1,165 @@
-html {
-  font-size: 14px;
-}
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: #0d0d0d;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Links */
+a {
+    color: #8b0000;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    a:hover {
+        color: #b22222;
+    }
+
+/* Buttons */
+.btn-rms {
+    background: #8b0000;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+    .btn-rms:hover {
+        background: #b22222;
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+    }
+
+.btn-rms-outline {
+    background: transparent;
+    color: #8b0000;
+    border: 2px solid #8b0000;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+    .btn-rms-outline:hover {
+        background: #8b0000;
+        color: white;
+        transform: scale(1.05);
+    }
+
+/* Cards */
+.card-rms {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+    .card-rms:hover {
+        border-color: #8b0000;
+        box-shadow: 0 8px 25px rgba(139, 0, 0, 0.1);
+    }
+
+/* Form Controls */
+.form-control-rms {
+    background: #0d0d0d;
+    border: 1px solid #2a2a2a;
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+    .form-control-rms:focus {
+        border-color: #8b0000;
+        box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+        background: #1a1a1a;
+        color: white;
+    }
+
+    .form-control-rms::placeholder {
+        color: #6c757d;
+    }
+
+/* Tables */
+.table-rms {
+    background: #1a1a1a;
+    border-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+    .table-rms thead {
+        background: #0d0d0d;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table-rms tbody tr:hover {
+        background: #2a2a2a;
+    }
+
+/* Utilities */
+.text-rms-red {
+    color: #8b0000 !important;
+}
+
+.bg-rms-red {
+    background: #8b0000 !important;
+}
+
+.border-rms-red {
+    border-color: #8b0000 !important;
+}
+
+/* Loading Spinner */
+.spinner-rms {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid #2a2a2a;
+    border-top: 4px solid #8b0000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Toast Messages */
+.toast-rms {
+    background: #1a1a1a;
+    border: 1px solid #8b0000;
+    color: white;
+    border-radius: 12px;
+}
+
+    .toast-rms .toast-header {
+        background: #0d0d0d;
+        color: #8b0000;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+/* Responsive Utilities */
+@media (max-width: 576px) {
+    .text-responsive {
+        font-size: 0.9rem;
+    }
 }

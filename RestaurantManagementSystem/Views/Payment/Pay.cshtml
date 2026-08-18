@@ -1,0 +1,419 @@
+﻿@model RestaurantManagementSystem.Models.Order
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="payment-page">
+
+    <div class="payment-card">
+
+        <!-- Header -->
+        <div class="payment-header">
+
+            <div>
+                <div class="rms-logo">
+                    RMS
+                </div>
+
+                <p class="payment-subtitle">
+                    Restaurant Management System
+                </p>
+            </div>
+
+            <div class="payment-title">
+                PAYMENT
+            </div>
+
+        </div>
+
+
+        <!-- Order Information -->
+        <div class="order-info">
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Order ID
+                </span>
+
+                <strong>
+                    #@Model.OrderId
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Order Status
+                </span>
+
+                <span class="status">
+                    @Model.OrderStatus
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total -->
+        <div class="total-box">
+
+            <span>
+                Total Amount
+            </span>
+
+            <strong>
+                @Model.TotalPrice.ToString("0.00") EGP
+            </strong>
+
+        </div>
+
+
+        <!-- Payment Form -->
+
+        <form asp-controller="Payments"
+              asp-action="Pay"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="orderId"
+                   value="@Model.OrderId" />
+
+
+            <div class="form-group">
+
+                <label>
+                    Payment Method
+                </label>
+
+                <select name="paymentMethod"
+                        required>
+
+                    <option value="">
+                        -- Select Payment Method --
+                    </option>
+
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="Card">
+                        Card
+                    </option>
+
+                    <option value="Wallet">
+                        Wallet
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="actions">
+
+                <button type="submit"
+                        class="pay-btn">
+
+                    Pay Now
+
+                </button>
+
+
+                <a asp-controller="Order"
+                   asp-action="ShowDetails"
+                   asp-route-id="@Model.OrderId"
+                   class="back-btn">
+
+                    Back to Order
+
+                </a>
+
+            </div>
+
+        </form>
+
+
+        <div class="payment-footer">
+
+            Secure payment through RMS
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* ================= PAYMENT PAGE ================= */
+
+    .payment-page {
+        min-height: calc(100vh - 140px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+    }
+
+
+    /* ================= CARD ================= */
+
+    .payment-card {
+        width: 100%;
+        max-width: 650px;
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 35px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .payment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #333;
+    }
+
+
+    .rms-logo {
+        color: #8b0000;
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+
+    .payment-subtitle {
+        color: #777;
+        margin: 3px 0 0;
+        font-size: 13px;
+    }
+
+
+    .payment-title {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+
+    /* ================= ORDER INFO ================= */
+
+    .order-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+
+    .info-box {
+        background: #181818;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 18px;
+    }
+
+
+    .info-label {
+        display: block;
+        color: #777;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+
+    .info-box strong {
+        color: #fff;
+        font-size: 18px;
+    }
+
+
+    /* ================= STATUS ================= */
+
+    .status {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        background: #198754;
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+
+    /* ================= TOTAL ================= */
+
+    .total-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #181818;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+
+        .total-box span {
+            color: #aaa;
+            font-size: 15px;
+        }
+
+
+        .total-box strong {
+            color: #fff;
+            font-size: 25px;
+        }
+
+
+    /* ================= FORM ================= */
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+
+        .form-group label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0d0d0d;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+
+            .form-group select:focus {
+                border-color: #8b0000;
+                box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+            }
+
+
+            .form-group select option {
+                background: #111;
+                color: white;
+            }
+
+
+    /* ================= BUTTONS ================= */
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+
+    .pay-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        background: #198754;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+
+        .pay-btn:hover {
+            background: #157347;
+        }
+
+
+    .back-btn {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #444;
+        border-radius: 6px;
+        background: transparent;
+        color: #ccc;
+        text-decoration: none;
+        text-align: center;
+        transition: 0.2s;
+    }
+
+
+        .back-btn:hover {
+            background: #222;
+            color: white;
+            border-color: #555;
+        }
+
+
+    /* ================= FOOTER ================= */
+
+    .payment-footer {
+        text-align: center;
+        color: #555;
+        font-size: 12px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #333;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 600px) {
+
+        .payment-page {
+            padding: 20px 10px;
+        }
+
+        .payment-card {
+            padding: 22px;
+        }
+
+        .payment-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .order-info {
+            grid-template-columns: 1fr;
+        }
+
+        .total-box {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+    }
+
+</style>

@@ -1,0 +1,438 @@
+﻿@model RestaurantManagementSystem.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Edit Menu Item";
+}
+
+<style>
+
+    /* ================= PAGE ================= */
+
+    .edit-menu-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 4%;
+        background-color: #0d0d0d;
+        color: white;
+    }
+
+
+    /* ================= HEADER ================= */
+
+    .edit-header {
+        margin-bottom: 25px;
+    }
+
+        .edit-header h2 {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .edit-header p {
+            color: #777;
+            margin: 0;
+        }
+
+
+    /* ================= FORM CARD ================= */
+
+    .edit-form-card {
+        max-width: 750px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+        /* ================= LABELS ================= */
+
+        .edit-form-card .form-label {
+            color: #ddd;
+            font-weight: 500;
+            margin-bottom: 7px;
+        }
+
+
+        /* ================= INPUTS ================= */
+
+        .edit-form-card .form-control {
+            background-color: #181818;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 7px;
+            padding: 11px 13px;
+        }
+
+            .edit-form-card .form-control:focus {
+                background-color: #181818;
+                color: white;
+                border-color: #8b0000;
+                box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.2);
+            }
+
+            .edit-form-card .form-control::placeholder {
+                color: #666;
+            }
+
+
+        /* ================= CHECKBOX ================= */
+
+        .edit-form-card .form-check-input {
+            background-color: #181818;
+            border-color: #555;
+            cursor: pointer;
+        }
+
+            .edit-form-card .form-check-input:checked {
+                background-color: #8b0000;
+                border-color: #8b0000;
+            }
+
+            .edit-form-card .form-check-input:focus {
+                box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.2);
+            }
+
+        .edit-form-card .form-check-label {
+            color: #ddd;
+            cursor: pointer;
+        }
+
+
+    /* ================= CURRENT IMAGE ================= */
+
+    .current-image {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #181818;
+        border: 1px solid #292929;
+        border-radius: 8px;
+    }
+
+    .current-image-title {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .current-image img {
+        width: 150px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #444;
+    }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-save {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 7px;
+        transition: 0.2s;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background-color: #b22222;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+
+    .btn-back {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #444;
+        padding: 10px 22px;
+        border-radius: 7px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back:hover {
+            background-color: #222;
+            color: white;
+            border-color: #666;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+
+    /* ================= FILE INPUT ================= */
+
+    .edit-form-card input[type="file"] {
+        cursor: pointer;
+    }
+
+        .edit-form-card input[type="file"]::-webkit-file-upload-button {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            margin-right: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .edit-menu-page {
+            padding: 25px 15px;
+        }
+
+        .edit-form-card {
+            padding: 20px;
+        }
+
+        .current-image img {
+            width: 130px;
+            height: 95px;
+        }
+    }
+
+</style>
+
+
+<div class="edit-menu-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="edit-header">
+
+        <h2>
+            Edit Menu Item
+        </h2>
+
+        <p>
+            Update the information of this menu item.
+        </p>
+
+    </div>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="edit-form-card">
+
+        <form asp-action="EditItem"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- Item ID -->
+
+            <input type="hidden"
+                   asp-for="ItemId" />
+
+
+            <!-- Validation -->
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+
+            <!-- ================= ITEM NAME ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="ItemName"
+                       class="form-label">
+
+                    Item Name
+
+                </label>
+
+                <input asp-for="ItemName"
+                       class="form-control"
+                       placeholder="Enter item name" />
+
+                <span asp-validation-for="ItemName"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- ================= PRICE ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="ItemPrice"
+                       class="form-label">
+
+                    Price
+
+                </label>
+
+                <div class="input-group">
+
+                    <input asp-for="ItemPrice"
+                           type="number"
+                           step="0.01"
+                           min="0"
+                           class="form-control"
+                           placeholder="0.00" />
+
+                    <span class="input-group-text bg-dark text-secondary border-secondary">
+                        EGP
+                    </span>
+
+                </div>
+
+                <span asp-validation-for="ItemPrice"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- ================= CATEGORY ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="Category"
+                       class="form-label">
+
+                    Category
+
+                </label>
+
+                <input asp-for="Category"
+                       class="form-control"
+                       placeholder="e.g. Pizza, Burger, Drinks" />
+
+                <span asp-validation-for="Category"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- ================= DESCRIPTION ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="Description"
+                       class="form-label">
+
+                    Description
+
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Describe the menu item..."></textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+
+            <!-- ================= CURRENT IMAGE ================= -->
+            @if (!string.IsNullOrEmpty(Model.ItemImage))
+            {
+                <div class="current-image mb-4">
+
+                    <div class="current-image-title">
+                        Current Image
+                    </div>
+
+                    <img src="@Model.ItemImage"
+                         alt="@Model.ItemName" />
+
+                </div>
+            }
+
+
+            <!-- ================= NEW IMAGE ================= -->
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Item Image
+                </label>
+
+                <input type="file"
+                       name="imageFile"
+                       class="form-control"
+                       accept="image/*" />
+
+                <small class="text-secondary">
+                    Select a new image if you want to replace the current image.
+                </small>
+
+            </div>
+
+
+            <!-- ================= AVAILABILITY ================= -->
+
+            <div class="form-check mb-4">
+
+                <input asp-for="Availability"
+                       class="form-check-input" />
+
+                <label asp-for="Availability"
+                       class="form-check-label">
+
+                    Available
+
+                </label>
+
+            </div>
+
+
+            <!-- ================= ACTIONS ================= -->
+
+            <div class="d-flex gap-2 pt-2">
+
+                <button type="submit"
+                        class="btn-save">
+
+                    Save Changes
+
+                </button>
+
+
+                <a asp-action="Index"
+                   class="btn-back">
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

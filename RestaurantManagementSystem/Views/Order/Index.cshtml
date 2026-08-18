@@ -1,0 +1,346 @@
+﻿@model IEnumerable<RestaurantManagementSystem.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+
+    var totalOrders = Model.Count();
+    var pendingOrders = Model.Count(x => x.OrderStatus == "Pending");
+    var confirmedOrders = Model.Count(x => x.OrderStatus == "Confirmed");
+    var cancelledOrders = Model.Count(x => x.OrderStatus == "Cancelled");
+}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold text-white mb-1">
+                Orders
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Manage all restaurant orders
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <!-- Total -->
+        <div class="col-md-3">
+
+            <div class="card bg-dark border-secondary h-100">
+
+                <div class="card-body">
+
+                    <p class="text-secondary mb-1">
+                        Total Orders
+                    </p>
+
+                    <h2 class="text-white fw-bold mb-0">
+                        @totalOrders
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pending -->
+        <div class="col-md-3">
+
+            <div class="card bg-dark border-warning h-100">
+
+                <div class="card-body">
+
+                    <p class="text-secondary mb-1">
+                        Pending
+                    </p>
+
+                    <h2 class="text-warning fw-bold mb-0">
+                        @pendingOrders
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Confirmed -->
+        <div class="col-md-3">
+
+            <div class="card bg-dark border-success h-100">
+
+                <div class="card-body">
+
+                    <p class="text-secondary mb-1">
+                        Confirmed
+                    </p>
+
+                    <h2 class="text-success fw-bold mb-0">
+                        @confirmedOrders
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Cancelled -->
+        <div class="col-md-3">
+
+            <div class="card bg-dark border-danger h-100">
+
+                <div class="card-body">
+
+                    <p class="text-secondary mb-1">
+                        Cancelled
+                    </p>
+
+                    <h2 class="text-danger fw-bold mb-0">
+                        @cancelledOrders
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Orders Table -->
+    <div class="card bg-dark border-secondary">
+
+        <div class="card-header bg-dark border-secondary">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="text-white mb-0">
+                    All Orders
+                </h5>
+
+                <span class="badge bg-danger">
+                    @totalOrders Orders
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+
+                    <h5 class="text-secondary">
+                        No Orders Found
+                    </h5>
+
+                    <p class="text-secondary mb-0">
+                        There are no orders available.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-dark table-hover align-middle mb-0">
+
+                        <thead>
+
+                            <tr>
+
+                                <th class="px-4">
+                                    Order
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Branch
+                                </th>
+
+                                <th>
+                                    Items
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th class="text-end px-4">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+
+                                    <!-- Order ID -->
+                                    <td class="px-4">
+
+                                        <span class="fw-bold rms-red">
+                                            #@order.OrderId
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Customer -->
+                                    <td>
+
+                                        <div class="fw-semibold">
+
+                                            @(order.User?.UserName ?? "Unknown")
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- Branch -->
+                                    <td>
+
+                                        <span class="text-secondary">
+
+                                            @(order.Branch?.Address ?? "Unknown")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Items -->
+                                    <td>
+
+                                        @if (order.OrderItems != null &&
+                                             order.OrderItems.Any())
+                                        {
+                                            <div>
+
+                                                @foreach (var item in order.OrderItems)
+                                                {
+                                                    <div class="small">
+
+                                                        @(item.Item?.ItemName ?? "Unknown")
+
+                                                        <span class="text-secondary">
+                                                            × @item.Quantity
+                                                        </span>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-secondary">
+                                                No items
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Total -->
+                                    <td>
+
+                                        <span class="fw-bold text-success">
+
+                                            @order.TotalPrice.ToString("0.00") EGP
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- Status -->
+                                    <td>
+
+                                        @if (order.OrderStatus == "Pending")
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Pending
+                                            </span>
+                                        }
+                                        else if (order.OrderStatus == "Confirmed")
+                                        {
+                                            <span class="badge bg-success">
+                                                Confirmed
+                                            </span>
+                                        }
+                                        else if (order.OrderStatus == "Cancelled")
+                                        {
+                                            <span class="badge bg-danger">
+                                                Cancelled
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                @order.OrderStatus
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- Action -->
+                                    <td class="text-end px-4">
+
+                                        <a asp-controller="Order"
+                                           asp-action="ShowDetails"
+                                           asp-route-id="@order.OrderId"
+                                           class="btn btn-sm btn-rms">
+
+                                            View Details
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

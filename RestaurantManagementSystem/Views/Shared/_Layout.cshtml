@@ -1,50 +1,974 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RestaurantManagementSystem</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RestaurantManagementSystem.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RestaurantManagementSystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - RestaurantManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - RMS
+    </title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/RestaurantManagementSystem.styles.css"
+          asp-append-version="true" />
+
+    <style>
+
+        /* =====================================================
+           GENERAL
+        ===================================================== */
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0d0d;
+            color: white;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        .rms-red {
+            color: #8b0000;
+        }
+
+        .btn-rms {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+        }
+
+        .btn-rms:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+
+        /* =====================================================
+           EMPLOYEE LAYOUT
+        ===================================================== */
+
+        .employee-layout {
+            min-height: 100vh;
+            background: #0d0d0d;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            min-height: 100vh;
+            background: #111;
+            border-right: 1px solid #292929;
+            padding: 20px 15px !important;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            padding: 10px 0 25px;
+            border-bottom: 1px solid #292929;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo h3 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #8b0000;
+        }
+
+        .sidebar-logo span {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-section {
+            margin-bottom: 22px;
+        }
+
+        .sidebar-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-section-title::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #292929;
+        }
+
+        .sidebar .nav {
+            gap: 4px !important;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #aaa;
+            padding: 11px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #1d1d1d;
+            color: #fff;
+            transform: translateX(3px);
+        }
+
+        .sidebar .nav-link i {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+            color: #777;
+            transition: 0.2s;
+        }
+
+        .sidebar .nav-link:hover i {
+            color: #d00000;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #8b0000;
+            color: white;
+        }
+
+        .sidebar .nav-link.active i {
+            color: white;
+        }
+
+        .sidebar-main-link {
+            margin-bottom: 18px;
+        }
+
+        .sidebar-submenu {
+            margin-left: 20px;
+            padding-left: 12px;
+            border-left: 1px solid #292929;
+        }
+
+        .sidebar-submenu .nav-link {
+            font-size: 13px;
+            padding: 8px 10px;
+            color: #888;
+        }
+
+        .sidebar-submenu .nav-link i {
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           SIDEBAR BOTTOM
+        ===================================================== */
+
+        .sidebar-bottom {
+            margin-top: 30px;
+            padding-top: 18px;
+            border-top: 1px solid #292929;
+        }
+
+        .sidebar-version {
+            text-align: center;
+            color: #444;
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            background-color: #111;
+            border-bottom: 1px solid #292929;
+            min-height: 65px;
+        }
+
+        .employee-content {
+            min-height: 100vh;
+            background-color: #0d0d0d;
+        }
+
+
+        /* =====================================================
+           CUSTOMER LAYOUT
+        ===================================================== */
+
+        .customer-layout {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+
+        /* =====================================================
+           CUSTOMER NAVBAR
+           UPDATED
+        ===================================================== */
+
+        .customer-navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+
+            width: 100%;
+            min-height: 70px;
+
+            background: rgba(10, 10, 10, 0.35);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            transition: 0.3s ease;
+        }
+
+        .customer-navbar:hover {
+            background: rgba(10, 10, 10, 0.55);
+        }
+
+        .customer-navbar .navbar-brand {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .customer-navbar .nav-link {
+            color: #eee !important;
+
+            padding: 10px 15px !important;
+
+            transition: 0.2s;
+
+            border-radius: 7px;
+
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .customer-navbar .nav-link:hover {
+            color: white !important;
+            background-color: rgba(139, 0, 0, 0.8);
+        }
+
+        .customer-navbar .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .customer-navbar .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .customer-navbar .text-light {
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+
+        /* =====================================================
+           CUSTOMER CAROUSEL
+        ===================================================== */
+
+        .customer-carousel {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .customer-carousel .carousel-inner,
+        .customer-carousel .carousel-item {
+            width: 100%;
+            height: 100%;
+        }
+
+        .customer-carousel .carousel-item {
+            position: relative;
+        }
+
+        .customer-carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .customer-carousel .carousel-item::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(
+                to top,
+                rgba(0,0,0,0.78),
+                rgba(0,0,0,0.15)
+            );
+
+            z-index: 1;
+        }
+
+        .customer-carousel .carousel-caption {
+            z-index: 2;
+            bottom: 18%;
+            text-shadow: 0 3px 10px black;
+        }
+
+        .customer-carousel .carousel-caption h2 {
+            font-size: clamp(32px, 5vw, 60px);
+            font-weight: 700;
+        }
+
+        .customer-carousel .carousel-caption p {
+            font-size: 20px;
+            color: #ddd;
+        }
+
+
+        /* =====================================================
+           GUEST
+        ===================================================== */
+
+        .guest-layout {
+            min-height: 100vh;
+            width: 100%;
+            background-color: #0d0d0d;
+        }
+
+        .guest-welcome {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.72),
+                    rgba(0,0,0,0.82)
+                ),
+                url('/images/restaurant1.jpg')
+                center / cover no-repeat;
+        }
+
+        .guest-content {
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            padding: 70px 40px;
+
+            background: rgba(17,17,17,0.85);
+
+            border: 1px solid #333;
+            border-radius: 20px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .guest-content h1 {
+            margin-bottom: 20px;
+            color: white;
+            font-size: clamp(35px, 5vw, 60px);
+            font-weight: 700;
+        }
+
+        .guest-content p {
+            max-width: 650px;
+            margin: 0 auto 35px;
+
+            color: #bbb;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .guest-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .guest-buttons .btn {
+            min-width: 150px;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .guest-buttons .btn-primary {
+            background-color: #8b0000;
+            border-color: #8b0000;
+        }
+
+        .guest-buttons .btn-primary:hover {
+            background-color: #b22222;
+            border-color: #b22222;
+            transform: translateY(-2px);
+        }
+
+        .guest-buttons .btn-outline-light:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @@media (max-width: 768px) {
+
+            .sidebar {
+                position: relative;
+                min-height: auto;
+            }
+
+            .customer-navbar {
+                min-height: 65px;
+            }
+
+            .customer-navbar .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .customer-carousel {
+                height: 100vh;
+            }
+
+            .customer-carousel .carousel-caption {
+                bottom: 20%;
+            }
+
+            .customer-carousel .carousel-caption h2 {
+                font-size: 35px;
+            }
+
+            .customer-carousel .carousel-caption p {
+                font-size: 16px;
+            }
+
+            .guest-content {
+                padding: 50px 25px;
+            }
+
+            .guest-content h1 {
+                font-size: 38px;
+            }
+
+            .guest-content p {
+                font-size: 16px;
+            }
+
+            .guest-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .guest-buttons .btn {
+                width: 100%;
+                max-width: 230px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+@{
+
+    bool isAuthenticated =
+        User.Identity != null &&
+        User.Identity.IsAuthenticated;
+
+    bool isCustomer =
+        isAuthenticated &&
+        User.IsInRole("Customer");
+
+    bool isEmployee =
+        isAuthenticated &&
+        User.IsInRole("Employee");
+
+}
+
+
+@if (isCustomer)
+{
+    <!-- =====================================================
+         CUSTOMER
+    ====================================================== -->
+
+    <div class="customer-layout">
+
+        <nav class="navbar navbar-expand-lg navbar-dark customer-navbar">
+
+            <div class="container-fluid px-4">
+
+                <a class="navbar-brand fw-bold rms-red"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    RMS
+
+                </a>
+
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#customerNavbar">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+
+                <div class="collapse navbar-collapse"
+                     id="customerNavbar">
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <span class="text-light">
+
+                            Hello,
+
+                            <strong class="rms-red">
+                                @User.Identity!.Name
+                            </strong>
+
+                            <span class="badge bg-info ms-1">
+                                Customer
+                            </span>
+
+                        </span>
+
+
+                        <form asp-controller="Account"
+                              asp-action="Logout"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-rms">
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+
+        <main>
+
+            @RenderBody()
+
+        </main>
+
+    </div>
+}
+
+
+else if (isEmployee)
+{
+    <!-- =====================================================
+         EMPLOYEE
+    ====================================================== -->
+
+    <div class="container-fluid employee-layout">
+
+        <div class="row">
+
+            <!-- =================================================
+                 SIDEBAR
+            ================================================== -->
+
+            <aside class="col-md-3 col-lg-2 d-md-block sidebar">
+
+                <!-- LOGO -->
+
+                <div class="sidebar-logo">
+
+                    <h3>RMS</h3>
+
+                    <span>
+                        Restaurant Management
+                    </span>
+
+                </div>
+
+
+                <ul class="nav flex-column">
+
+
+                    <!-- ================= MAIN ================= -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-section-title">
+                            Main
+                        </div>
+
+                        <li class="nav-item sidebar-main-link">
+
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <i class="bi bi-house"></i>
+
+                                <span>Dashboard</span>
+
+                            </a>
+
+                        </li>
+
+                    </div>
+
+
+                    <!-- ================= USERS ================= -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-section-title">
+                            Users
+                        </div>
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Users"
+                               asp-action="Index">
+
+                                <i class="bi bi-people"></i>
+
+                                <span>All Users</span>
+
+                            </a>
+
+                        </li>
+
+
+                        <div class="sidebar-submenu mt-1">
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Users"
+                                   asp-action="Index"
+                                   asp-route-role="Customer">
+
+                                    <i class="bi bi-person"></i>
+
+                                    <span>Customers</span>
+
+                                </a>
+
+                            </li>
+
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Users"
+                                   asp-action="Index"
+                                   asp-route-role="Employee">
+
+                                    <i class="bi bi-person-badge"></i>
+
+                                    <span>Employees</span>
+
+                                </a>
+
+                            </li>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================= MENU ================= -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-section-title">
+                            Restaurant
+                        </div>
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Menu"
+                               asp-action="Index">
+
+                                <i class="bi bi-grid"></i>
+
+                                <span>Menu Items</span>
+
+                            </a>
+
+                        </li>
+
+
+                        <div class="sidebar-submenu mt-1">
+
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-controller="Menu"
+                                   asp-action="AddItems">
+
+                                    <i class="bi bi-plus-circle"></i>
+
+                                    <span>Add Item</span>
+
+                                </a>
+
+                            </li>
+
+                        </div>
+
+
+                        <li class="nav-item mt-1">
+
+                            <a class="nav-link"
+                               asp-controller="Branch"
+                               asp-action="Index">
+
+                                <i class="bi bi-building"></i>
+
+                                <span>Branches</span>
+
+                            </a>
+
+                        </li>
+
+                    </div>
+
+
+                    <!-- ================= PAYMENTS ================= -->
+
+                    <div class="sidebar-section">
+
+                        <div class="sidebar-section-title">
+                            Finance
+                        </div>
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Payment"
+                               asp-action="Index">
+
+                                <i class="bi bi-credit-card"></i>
+
+                                <span>Payments</span>
+
+                            </a>
+
+                        </li>
+
+                    </div>
+
+                </ul>
+
+
+                <!-- SIDEBAR BOTTOM -->
+
+                <div class="sidebar-bottom">
+
+                    <div class="text-center">
+
+                        <span class="badge bg-danger">
+                            Employee
+                        </span>
+
+                    </div>
+
+                    <div class="sidebar-version">
+                        RMS v1.0 · 2026
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            <!-- =================================================
+                 MAIN CONTENT
+            ================================================== -->
+
+            <div class="col-md-9 ms-sm-auto col-lg-10 employee-content px-md-4">
+
+
+                <!-- TOPBAR -->
+
+                <nav class="navbar topbar navbar-dark mb-4">
+
+                    <div class="container-fluid">
+
+                        <span class="navbar-text">
+
+                            Hello,
+
+                            <strong class="rms-red">
+                                @User.Identity!.Name
+                            </strong>
+
+                            <span class="badge bg-danger ms-2">
+                                Employee
+                            </span>
+
+                        </span>
+
+
+                        <form asp-controller="Account"
+                              asp-action="Logout"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <button type="submit"
+                                    class="btn btn-rms">
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </nav>
+
+
+                <!-- PAGE -->
+
+                <main class="content-area">
+
+                    @RenderBody()
+
+                </main>
+
+
+                <!-- FOOTER -->
+
+                <footer class="border-top text-secondary py-3 mt-4">
+
+                    <div class="text-center">
+
+                        &copy; 2026 - RMS
+
+                    </div>
+
+                </footer>
+
+            </div>
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    </div>
+}
+
+
+else
+{
+    <!-- =====================================================
+         GUEST
+         NO SIDEBAR
+         NO TOPBAR
+    ====================================================== -->
+
+    <div class="guest-layout">
+
+        @RenderBody()
+
+    </div>
+}
+
+
+<!-- =====================================================
+     SCRIPTS
+====================================================== -->
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

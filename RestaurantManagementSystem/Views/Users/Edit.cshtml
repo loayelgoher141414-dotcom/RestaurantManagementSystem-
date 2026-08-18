@@ -1,144 +1,418 @@
-﻿@model RestaurantManagementSystem.Models.User
+﻿@model RestaurantManagementSystem.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Edit User";
 }
 
-<div class="container mt-4">
+<div class="rms-page">
 
-    <h2>Edit User</h2>
+    <div class="rms-form-wrapper">
 
-    <hr />
-
-    <form asp-action="Edit" method="post">
-
-        <input type="hidden" asp-for="UserId" />
-
-        <div asp-validation-summary="ModelOnly"
-             class="text-danger mb-3">
+        <div class="rms-form-header">
+            <div>
+                <span class="rms-form-label">USER MANAGEMENT</span>
+                <h1>Edit User</h1>
+                <p>Update user information and permissions</p>
+            </div>
         </div>
 
-        <!-- Username -->
-        <div class="mb-3">
-            <label asp-for="UserName" class="form-label">
-                Username
-            </label>
+        <form asp-action="Edit" method="post" class="rms-form">
 
-            <input asp-for="UserName"
-                   class="form-control" />
+            @Html.AntiForgeryToken()
 
-            <span asp-validation-for="UserName"
-                  class="text-danger">
-            </span>
-        </div>
+            <input type="hidden"
+                   name="id"
+                   value="@Model.Id" />
 
-        <!-- Phone -->
-        <div class="mb-3">
-            <label asp-for="UserPhoneNumber"
-                   class="form-label">
-                Phone Number
-            </label>
+            <div asp-validation-summary="All"
+                 class="rms-validation">
+            </div>
 
-            <input asp-for="UserPhoneNumber"
-                   class="form-control" />
 
-            <span asp-validation-for="UserPhoneNumber"
-                  class="text-danger">
-            </span>
-        </div>
+            <!-- Personal Information -->
+            <div class="rms-section">
 
-        <!-- Email -->
-        <div class="mb-3">
-            <label asp-for="Email"
-                   class="form-label">
-                Email
-            </label>
+                <h3>Personal Information</h3>
 
-            <input asp-for="Email"
-                   class="form-control" />
+                <div class="rms-form-grid">
 
-            <span asp-validation-for="Email"
-                  class="text-danger">
-            </span>
-        </div>
+                    <!-- Name -->
+                    <div class="rms-field">
 
-        <!-- Address -->
-        <div class="mb-3">
-            <label asp-for="Address"
-                   class="form-label">
-                Address
-            </label>
+                        <label asp-for="Name">
+                            Name
+                        </label>
 
-            <textarea asp-for="Address"
-                      class="form-control"></textarea>
+                        <input asp-for="Name"
+                               placeholder="Enter user name" />
 
-            <span asp-validation-for="Address"
-                  class="text-danger">
-            </span>
-        </div>
+                        <span asp-validation-for="Name"
+                              class="rms-error">
+                        </span>
 
-        <!-- Role -->
-        <div class="mb-3">
-            <label asp-for="Role"
-                   class="form-label">
-                Role
-            </label>
+                    </div>
 
-            <select asp-for="Role"
-                    class="form-select">
 
-                @foreach (var role in ViewBag.Roles)
-                {
-                    <option value="@role">
-                        @role
-                    </option>
-                }
+                    <!-- Email -->
+                    <div class="rms-field">
 
-            </select>
+                        <label asp-for="Email">
+                            Email
+                        </label>
 
-            <span asp-validation-for="Role"
-                  class="text-danger">
-            </span>
-        </div>
+                        <input asp-for="Email"
+                               type="email"
+                               placeholder="example@email.com" />
 
-        <!-- Branch -->
-        <div class="mb-3">
-            <label asp-for="BranchId"
-                   class="form-label">
-                Branch
-            </label>
+                        <span asp-validation-for="Email"
+                              class="rms-error">
+                        </span>
 
-            <select asp-for="BranchId"
-                    class="form-select">
+                    </div>
 
-                <option value="0">
-                    -- Select Branch --
-                </option>
 
-                @foreach (var branch in ViewBag.Branches)
-                {
-                    <option value="@branch.BranchId">
-                        @branch.Address
-                    </option>
-                }
+                    <!-- Phone -->
+                    <div class="rms-field">
 
-            </select>
+                        <label asp-for="PhoneNumber">
+                            Phone Number
+                        </label>
 
-            <span asp-validation-for="BranchId"
-                  class="text-danger">
-            </span>
-        </div>
+                        <input asp-for="PhoneNumber"
+                               placeholder="Enter phone number" />
 
-        <button type="submit"
-                class="btn btn-success">
-            Save Changes
-        </button>
+                        <span asp-validation-for="PhoneNumber"
+                              class="rms-error">
+                        </span>
 
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Cancel
-        </a>
+                    </div>
 
-    </form>
+
+                    <!-- Address -->
+                    <div class="rms-field rms-full">
+
+                        <label asp-for="Address">
+                            Address
+                        </label>
+
+                        <textarea asp-for="Address"
+                                  rows="3"
+                                  placeholder="Enter address"></textarea>
+
+                        <span asp-validation-for="Address"
+                              class="rms-error">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Account Settings -->
+            <div class="rms-section">
+
+                <h3>Account Settings</h3>
+
+                <div class="rms-form-grid">
+
+                    <!-- Role -->
+                    <div class="rms-field">
+
+                        <label for="role">
+                            Role
+                        </label>
+
+                        <select id="role"
+                                name="role">
+
+                            @foreach (var role in ViewBag.Roles)
+                            {
+                                if (ViewBag.CurrentRole == role)
+                                {
+                                    <option value="@role"
+                                            selected>
+                                        @role
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@role">
+                                        @role
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Branch -->
+                    <div class="rms-field">
+
+                        <label asp-for="BranchId">
+                            Branch
+                        </label>
+
+                        <select asp-for="BranchId">
+
+                            <option value="">
+                                -- Select Branch --
+                            </option>
+
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                if (Model.BranchId == branch.BranchId)
+                                {
+                                    <option value="@branch.BranchId"
+                                            selected>
+                                        @branch.Address
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@branch.BranchId">
+                                        @branch.Address
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="BranchId"
+                              class="rms-error">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="rms-form-actions">
+
+                <button type="submit"
+                        class="rms-btn rms-btn-primary">
+                    Save Changes
+                </button>
+
+                <a asp-action="Index"
+                   class="rms-btn rms-btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
+
+
+<style>
+
+    .rms-page {
+        width: 100%;
+        padding: 35px;
+    }
+
+    .rms-form-wrapper {
+        max-width: 950px;
+        margin: 0 auto;
+    }
+
+    .rms-form-header {
+        margin-bottom: 30px;
+    }
+
+    .rms-form-label {
+        color: #b00020;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .rms-form-header h1 {
+        margin: 6px 0;
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .rms-form-header p {
+        margin: 0;
+        color: #999;
+    }
+
+    .rms-form {
+        background: #151515;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 30px;
+    }
+
+    .rms-section {
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #292929;
+    }
+
+        .rms-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 10px;
+        }
+
+        .rms-section h3 {
+            color: #fff;
+            font-size: 18px;
+            margin-bottom: 22px;
+        }
+
+    .rms-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .rms-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rms-full {
+        grid-column: 1 / -1;
+    }
+
+    .rms-field label {
+        color: #ddd;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .rms-field input,
+    .rms-field textarea,
+    .rms-field select {
+        width: 100%;
+        background: #0f0f0f;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #fff;
+        padding: 12px 14px;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .rms-field textarea {
+        resize: vertical;
+    }
+
+        .rms-field input:focus,
+        .rms-field textarea:focus,
+        .rms-field select:focus {
+            border-color: #b00020;
+            box-shadow: 0 0 0 2px rgba(176, 0, 32, 0.12);
+        }
+
+    .rms-field select option {
+        background: #151515;
+        color: #fff;
+    }
+
+    .rms-error {
+        color: #ff5c5c;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .rms-validation {
+        background: rgba(176, 0, 32, 0.1);
+        border: 1px solid rgba(176, 0, 32, 0.4);
+        color: #ff6b6b;
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 25px;
+    }
+
+    .rms-form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .rms-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 22px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .rms-btn-primary {
+        background: #b00020;
+        color: #fff;
+    }
+
+        .rms-btn-primary:hover {
+            background: #8f001a;
+            color: #fff;
+        }
+
+    .rms-btn-secondary {
+        background: #292929;
+        color: #ddd;
+    }
+
+        .rms-btn-secondary:hover {
+            background: #383838;
+            color: #fff;
+        }
+
+
+    @@media (max-width: 700px) {
+
+        .rms-page {
+            padding: 20px;
+        }
+
+        .rms-form {
+            padding: 20px;
+        }
+
+        .rms-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rms-full {
+            grid-column: auto;
+        }
+
+        .rms-form-actions {
+            flex-direction: column;
+        }
+
+        .rms-btn {
+            width: 100%;
+        }
+    }
+
+</style>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

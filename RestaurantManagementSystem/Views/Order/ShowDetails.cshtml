@@ -1,92 +1,746 @@
 ﻿@model RestaurantManagementSystem.Models.Order
 
-<div class="container mt-4">
+@{
+    ViewData["Title"] = $"Order #{Model.OrderId}";
+}
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Order #@Model.OrderId</h3>
-        <span class="badge bg-warning text-dark fs-6">@Model.OrderStatus</span>
-    </div>
+<style>
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <p class="mb-1"><strong>User Id:</strong> @Model.UserId</p>
-            <p class="mb-1"><strong>Branch:</strong> @Model.Branch.Address</p>
-            <p class="mb-0"><strong>Total:</strong> @Model.TotalPrice.ToString("0.00") EGP</p>
-        </div>
-    </div>
+    /* ================= ORDER DETAILS ================= */
 
-    <h5>Items Ordered</h5>
-    <table class="table table-striped table-hover align-middle">
-        <thead class="table-dark">
-            <tr>
-                <th style="width: 70px;">Image</th>
-                <th>Item</th>
-                <th style="width: 100px;">Quantity</th>
-                <th style="width: 100px;">Price</th>
-                <th style="width: 100px;">Subtotal</th>
-                <th style="width: 260px;">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.OrderItems)
-            {
-                <tr>
-                    <td>
-                        <img src="@item.Item.ItemImage" alt="@item.Item.ItemName"
-                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;" />
-                    </td>
-                    <td>@item.Item.ItemName</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.ItemPrice.ToString("0.00")</td>
-                    <td>@((item.ItemPrice * item.Quantity).ToString("0.00"))</td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <form asp-action="UpdateQuantity" asp-controller="Order" method="post" class="d-flex align-items-center gap-1 mb-0">
-                                <input type="hidden" name="orderId" value="@Model.OrderId" />
-                                <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
-                                <input type="number" name="newQuantity" value="@item.Quantity" min="1"
-                                       class="form-control form-control-sm" style="width: 60px;" />
-                                <button type="submit" class="btn btn-sm btn-success">Update Quantity</button>
-                            </form>
+    .order-details-page {
+        background-color: #0d0d0d;
+        min-height: calc(100vh - 70px);
+        padding: 35px 5%;
+        color: white;
+    }
 
-                            <form asp-action="DeleteItem" asp-controller="Order" method="post"
-                                  onsubmit="return confirm('Are you sure you want to delete this item?');" class="mb-0">
-                                <input type="hidden" name="orderId" value="@Model.OrderId" />
-                                <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
-                                <button type="submit" class="btn btn-sm btn-danger">Delete Item</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+
+    /* ================= HEADER ================= */
+
+    .order-details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+        .order-details-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+
+    /* ================= STATUS ================= */
+
+    .order-status {
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        background-color: #8b0000;
+        color: white;
+    }
+
+
+    /* ================= ORDER INFO ================= */
+
+    .order-info-card {
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        padding: 25px;
+        margin-bottom: 35px;
+    }
+
+    .info-box {
+        background-color: #191919;
+        border: 1px solid #292929;
+        border-radius: 10px;
+        padding: 15px 18px;
+        height: 100%;
+    }
+
+    .info-label {
+        color: #777;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .total-value {
+        color: #dc3545;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+
+    /* ================= ITEMS TITLE ================= */
+
+    .items-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+        .items-title h4 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+    .items-line {
+        height: 2px;
+        flex: 1;
+        background: linear-gradient( to right, #8b0000, transparent );
+    }
+
+
+    /* ================= ITEMS CONTAINER ================= */
+
+    .items-card {
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+
+    /* ================= TABLE ================= */
+
+    .order-table {
+        width: 100%;
+        margin: 0;
+        color: white;
+        border-collapse: collapse;
+    }
+
+        .order-table thead {
+            background-color: #191919;
+        }
+
+        .order-table th {
+            color: #aaa;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 16px;
+            border-bottom: 1px solid #333;
+        }
+
+        .order-table td {
+            padding: 15px;
+            border-bottom: 1px solid #292929;
+            vertical-align: middle;
+            color: #ddd;
+        }
+
+        .order-table tbody tr {
+            transition: 0.2s;
+        }
+
+            .order-table tbody tr:hover {
+                background-color: #171717;
             }
-        </tbody>
-    </table>
 
-    <div class="d-flex gap-2 mt-3">
-        <form asp-action="CancelOrder" asp-controller="Order" method="post">
-            <input type="hidden" name="id" value="@Model.OrderId" />
-            <button type="submit" class="btn btn-danger">Cancel Order</button>
+            .order-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+
+    /* ================= ITEM IMAGE ================= */
+
+    .item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #333;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: white;
+    }
+
+
+    /* ================= PRICE ================= */
+
+    .item-price {
+        color: #aaa;
+    }
+
+    .item-subtotal {
+        color: #dc3545;
+        font-weight: 700;
+    }
+
+
+    /* ================= QUANTITY ================= */
+
+    .quantity-form {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .quantity-input {
+        width: 65px;
+        background-color: #0d0d0d;
+        color: white;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 6px;
+        text-align: center;
+    }
+
+        .quantity-input:focus {
+            background-color: #0d0d0d;
+            color: white;
+            border-color: #8b0000;
+            box-shadow: none;
+        }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-update {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+    }
+
+        .btn-update:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+    .btn-delete {
+        background-color: transparent;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+        .btn-delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+
+    /* ================= ACTIONS ================= */
+
+    .order-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #292929;
+    }
+
+    .btn-cancel {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-cancel:hover {
+            background-color: #b02a37;
+            color: white;
+        }
+
+    .btn-confirm {
+        background-color: #198754;
+        color: white;
+        border: none;
+    }
+
+        .btn-confirm:hover {
+            background-color: #157347;
+            color: white;
+        }
+
+    .btn-invoice {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #555;
+    }
+
+        .btn-invoice:hover {
+            background-color: #222;
+            color: white;
+            border-color: #777;
+        }
+
+
+    /* ================= MESSAGE ================= */
+
+    .rms-message {
+        background-color: #171717;
+        border: 1px solid #8b0000;
+        color: #ddd;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-top: 25px;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @@media (max-width: 992px) {
+
+        .order-table {
+            min-width: 900px;
+        }
+
+        .items-card {
+            overflow-x: auto;
+        }
+    }
+
+
+    @@media (max-width: 768px) {
+
+        .order-details-page {
+            padding: 25px 15px;
+        }
+
+        .order-details-header {
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+            .order-details-header h2 {
+                font-size: 1.5rem;
+            }
+
+        .order-status {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+        }
+
+        .order-info-card {
+            padding: 15px;
+        }
+
+        .order-actions {
+            flex-direction: column;
+        }
+
+            .order-actions form,
+            .order-actions a {
+                width: 100%;
+            }
+
+            .order-actions button,
+            .order-actions a {
+                width: 100%;
+            }
+    }
+
+</style>
+
+
+<div class="order-details-page">
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <div class="order-details-header">
+
+        <h2>
+            Order #@Model.OrderId
+        </h2>
+
+        <span class="order-status">
+
+            @Model.OrderStatus
+
+        </span>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ORDER INFORMATION -->
+    <!-- ================================================= -->
+
+    <div class="order-info-card">
+
+        <div class="row g-3">
+
+
+            <!-- USER -->
+
+            <div class="col-md-4">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        CUSTOMER
+                    </div>
+
+                    <div class="info-value">
+                        @Model.UserId
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BRANCH -->
+
+            <div class="col-md-4">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        BRANCH
+                    </div>
+
+                    <div class="info-value">
+
+                        @Model.Branch.Address
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="col-md-4">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        TOTAL
+                    </div>
+
+                    <div class="total-value">
+
+                        @Model.TotalPrice.ToString("0.00") EGP
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ITEMS -->
+    <!-- ================================================= -->
+
+    <div class="items-title">
+
+        <h4>
+            Items Ordered
+        </h4>
+
+        <div class="items-line"></div>
+
+    </div>
+
+
+    <div class="items-card">
+
+        <table class="order-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Image
+                    </th>
+
+                    <th>
+                        Item
+                    </th>
+
+                    <th>
+                        Quantity
+                    </th>
+
+                    <th>
+                        Price
+                    </th>
+
+                    <th>
+                        Subtotal
+                    </th>
+
+                    <th>
+                        Options
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @foreach (var item in Model.OrderItems)
+                {
+
+                    <tr>
+
+
+                        <!-- IMAGE -->
+
+                        <td>
+
+                            @if (!string.IsNullOrEmpty(item.Item.ItemImage))
+                            {
+
+                                <img src="@item.Item.ItemImage"
+                                     alt="@item.Item.ItemName"
+                                     class="item-image" />
+
+                            }
+                            else
+                            {
+
+                                <div class="item-image d-flex align-items-center justify-content-center text-secondary">
+
+                                    No Image
+
+                                </div>
+
+                            }
+
+                        </td>
+
+
+                        <!-- ITEM -->
+
+                        <td>
+
+                            <span class="item-name">
+
+                                @item.Item.ItemName
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- QUANTITY -->
+
+                        <td>
+
+                            @item.Quantity
+
+                        </td>
+
+
+                        <!-- PRICE -->
+
+                        <td>
+
+                            <span class="item-price">
+
+                                @item.ItemPrice.ToString("0.00") EGP
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- SUBTOTAL -->
+
+                        <td>
+
+                            <span class="item-subtotal">
+
+                                @((item.ItemPrice * item.Quantity).ToString("0.00")) EGP
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- OPTIONS -->
+
+                        <td>
+
+                            <div class="d-flex align-items-center gap-2">
+
+
+                                <!-- UPDATE -->
+
+                                <form asp-action="UpdateQuantity"
+                                      asp-controller="Order"
+                                      method="post"
+                                      class="quantity-form mb-0">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="orderId"
+                                           value="@Model.OrderId" />
+
+                                    <input type="hidden"
+                                           name="orderItemId"
+                                           value="@item.OrderItemId" />
+
+                                    <input type="number"
+                                           name="newQuantity"
+                                           value="@item.Quantity"
+                                           min="1"
+                                           class="quantity-input" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-update">
+
+                                        Update
+
+                                    </button>
+
+                                </form>
+
+
+                                <!-- DELETE -->
+
+                                <form asp-action="DeleteItem"
+                                      asp-controller="Order"
+                                      method="post"
+                                      class="mb-0"
+                                      onsubmit="return confirm('Are you sure you want to delete this item?');">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="orderId"
+                                           value="@Model.OrderId" />
+
+                                    <input type="hidden"
+                                           name="orderItemId"
+                                           value="@item.OrderItemId" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-delete">
+
+                                        Delete
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- ORDER ACTIONS -->
+    <!-- ================================================= -->
+
+    <div class="order-actions">
+
+
+        <!-- CANCEL -->
+
+        <form asp-action="CancelOrder"
+              asp-controller="Order"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.OrderId" />
+
+            <button type="submit"
+                    class="btn btn-cancel">
+
+                Cancel Order
+
+            </button>
+
         </form>
 
-        <form asp-action="ConfirmOrder" asp-controller="Order" method="post">
-            <input type="hidden" name="id" value="@Model.OrderId" />
-            <button type="submit" class="btn btn-success">Confirm Order</button>
+
+        <!-- CONFIRM -->
+
+        <form asp-action="ConfirmOrder"
+              asp-controller="Order"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="id"
+                   value="@Model.OrderId" />
+
+            <button type="submit"
+                    class="btn btn-confirm">
+
+                Confirm Order
+
+            </button>
+
         </form>
 
+
+        <!-- INVOICE -->
         @if (Model.OrderStatus == "Confirmed")
         {
-            <a asp-action="Invoice" asp-controller="Payment" asp-route-id="@Model.OrderId" class="btn btn-outline-secondary" target="_blank">View Invoice</a>
+
+            <a asp-action="Invoice"
+               asp-controller="Payment"
+               asp-route-id="@Model.OrderId"
+               class="btn btn-invoice"
+               target="_blank">
+
+                View Invoice
+
+            </a>
+
         }
+
     </div>
 
+
+    <!-- ================================================= -->
+    <!-- MESSAGE -->
+    <!-- ================================================= -->
     @if (TempData["Message"] != null)
     {
-        <div class="alert alert-info mt-3">
+
+        <div class="rms-message">
+
             @TempData["Message"]
+
         </div>
+
     }
 
 </div>
-
-
-

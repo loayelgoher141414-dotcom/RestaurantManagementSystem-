@@ -4,31 +4,271 @@
     ViewData["Title"] = "Add Branch";
 }
 
-<h1>Add Branch</h1>
+<style>
 
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    /* ================= BRANCH PAGE ================= */
 
-            <div class="form-group mb-3">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
+    .branch-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 5%;
+        background-color: #0d0d0d;
+        color: white;
+    }
 
-            <div class="form-group mb-3">
-                <label asp-for="BranchPhoneNumber" class="control-label"></label>
-                <input asp-for="BranchPhoneNumber" class="form-control" />
-                <span asp-validation-for="BranchPhoneNumber" class="text-danger"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
-        </form>
+    /* ================= HEADER ================= */
+
+    .branch-header {
+        margin-bottom: 30px;
+    }
+
+        .branch-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .branch-header p {
+            color: #777;
+            margin: 0;
+        }
+
+
+    /* ================= CARD ================= */
+
+    .branch-card {
+        max-width: 650px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* ================= FORM ================= */
+
+    .branch-label {
+        display: block;
+        color: #ccc;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .branch-input {
+        width: 100%;
+        background-color: #0d0d0d;
+        color: white;
+        border: 1px solid #3a3a3a;
+        border-radius: 8px;
+        padding: 11px 14px;
+        transition: 0.2s;
+    }
+
+        .branch-input::placeholder {
+            color: #666;
+        }
+
+        .branch-input:focus {
+            background-color: #0d0d0d;
+            color: white;
+            border-color: #8b0000;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.15);
+        }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-save-branch {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        padding: 10px 22px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-save-branch:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+    .btn-back-branch {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #444;
+        border-radius: 7px;
+        padding: 10px 22px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back-branch:hover {
+            background-color: #222;
+            color: white;
+            border-color: #666;
+        }
+
+
+    /* ================= VALIDATION ================= */
+
+    .validation-summary {
+        background-color: rgba(139, 0, 0, 0.12);
+        border: 1px solid #8b0000;
+        border-radius: 8px;
+        padding: 10px 15px;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+
+    .validation-error {
+        display: block;
+        color: #dc3545;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .branch-page {
+            padding: 25px 15px;
+        }
+
+        .branch-card {
+            padding: 22px;
+        }
+
+        .branch-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .branch-actions button,
+            .branch-actions a {
+                width: 100%;
+                text-align: center;
+            }
+    }
+
+</style>
+
+
+<div class="branch-page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="branch-header">
+
+        <h2>
+            Add Branch
+        </h2>
+
+        <p>
+            Add a new restaurant branch to the system.
+        </p>
+
     </div>
+
+
+    <!-- ================= FORM CARD ================= -->
+
+    <div class="branch-card">
+
+        <form asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- VALIDATION -->
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- ================= ADDRESS ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="Address"
+                       class="branch-label">
+
+                    Branch Address
+
+                </label>
+
+                <input asp-for="Address"
+                       class="branch-input"
+                       placeholder="Enter branch address" />
+
+                <span asp-validation-for="Address"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ================= PHONE ================= -->
+
+            <div class="mb-4">
+
+                <label asp-for="BranchPhoneNumber"
+                       class="branch-label">
+
+                    Branch Phone Number
+
+                </label>
+
+                <input asp-for="BranchPhoneNumber"
+                       class="branch-input"
+                       placeholder="Enter branch phone number" />
+
+                <span asp-validation-for="BranchPhoneNumber"
+                      class="validation-error">
+                </span>
+
+            </div>
+
+
+            <!-- ================= BUTTONS ================= -->
+
+            <div class="branch-actions d-flex gap-2">
+
+                <button type="submit"
+                        class="btn-save-branch">
+
+                    Save Branch
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-back-branch">
+
+                    Back to Branches
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

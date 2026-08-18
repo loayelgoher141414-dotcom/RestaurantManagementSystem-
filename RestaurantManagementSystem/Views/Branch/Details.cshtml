@@ -4,26 +4,285 @@
     ViewData["Title"] = "Branch Details";
 }
 
-<h1>Branch Details</h1>
+<style>
 
-<div class="row">
-    <div class="col-md-5">
-        <dl class="row">
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.BranchId)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.BranchId)</dd>
+    /* ================= DETAILS PAGE ================= */
 
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Address)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.Address)</dd>
+    .branch-details-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 5%;
+        background-color: #0d0d0d;
+        color: white;
+    }
 
-            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.BranchPhoneNumber)</dt>
-            <dd class="col-sm-8">@Html.DisplayFor(model => model.BranchPhoneNumber)</dd>
 
-            <dt class="col-sm-4">Manager</dt>
-            <dd class="col-sm-8">@(Model.Manager != null ? Model.Manager.UserName : "Not assigned")</dd>
-        </dl>
+    /* ================= HEADER ================= */
+
+    .details-header {
+        margin-bottom: 30px;
+    }
+
+        .details-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .details-header p {
+            color: #777;
+            margin: 0;
+        }
+
+
+    /* ================= CARD ================= */
+
+    .details-card {
+        max-width: 700px;
+        background-color: #111;
+        border: 1px solid #292929;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+
+    /* ================= DETAILS ================= */
+
+    .branch-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #191919;
+        border: 1px solid #292929;
+        border-radius: 8px;
+        padding: 15px 18px;
+    }
+
+    .info-label {
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        color: white;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .branch-id {
+        color: #8b0000;
+    }
+
+
+    /* ================= BUTTONS ================= */
+
+    .btn-edit {
+        background-color: #8b0000;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-edit:hover {
+            background-color: #b22222;
+            color: white;
+        }
+
+
+    .btn-orders {
+        background-color: #333;
+        color: white;
+        border: 1px solid #555;
+        border-radius: 7px;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-orders:hover {
+            background-color: #444;
+            color: white;
+        }
+
+
+    .btn-back {
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #444;
+        border-radius: 7px;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back:hover {
+            background-color: #222;
+            color: white;
+            border-color: #666;
+        }
+
+
+    /* ================= RESPONSIVE ================= */
+
+    @@media (max-width: 768px) {
+
+        .branch-details-page {
+            padding: 25px 15px;
+        }
+
+        .details-card {
+            padding: 22px;
+        }
+
+        .info-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .info-value {
+            text-align: left;
+        }
+
+        .details-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .details-actions a {
+                width: 100%;
+                text-align: center;
+            }
+    }
+
+</style>
+
+
+<div class="branch-details-page">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="details-header">
+
+        <h2>
+            Branch Details
+        </h2>
+
+        <p>
+            View information and manage this restaurant branch.
+        </p>
+
     </div>
-</div>
 
-<a asp-action="Edit" asp-route-id="@Model.BranchId" class="btn btn-secondary">Edit</a>
-<a asp-action="Orders" asp-route-id="@Model.BranchId" class="btn btn-info">View Orders</a>
-<a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+
+    <!-- ================= DETAILS CARD ================= -->
+
+    <div class="details-card">
+
+
+        <div class="branch-info">
+
+
+            <!-- BRANCH ID -->
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Branch ID
+                </span>
+
+                <span class="info-value branch-id">
+                    #@Model.BranchId
+                </span>
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Address
+                </span>
+
+                <span class="info-value">
+                    @Model.Address
+                </span>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Phone Number
+                </span>
+
+                <span class="info-value">
+                    @Model.BranchPhoneNumber
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div class="details-actions d-flex gap-2 flex-wrap">
+
+
+            <!-- EDIT -->
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.BranchId"
+               class="btn-edit">
+
+                Edit Branch
+
+            </a>
+
+
+            <!-- ORDERS -->
+
+            <a asp-action="Orders"
+               asp-route-id="@Model.BranchId"
+               class="btn-orders">
+
+                View Orders
+
+            </a>
+
+
+            <!-- BACK -->
+
+            <a asp-action="Index"
+               class="btn-back">
+
+                Back to Branches
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</div>

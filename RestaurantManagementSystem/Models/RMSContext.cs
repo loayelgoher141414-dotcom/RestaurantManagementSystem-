@@ -1,33 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestaurantManagementSystem.Models;
-using System.Reflection.Emit;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestaurantManagementSystem.Models
 {
-    public class RMSContext : DbContext
+    public class RMSContext : IdentityDbContext<ApplicationUser, IdentityRole<int> , int>
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public RMSContext(DbContextOptions<RMSContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=.\SQLEXPRESS;Database=RestaurantManagementDB;Trusted_Connection=True;TrustServerCertificate=True;"
-            );
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
+
+            modelBuilder.Entity<ApplicationUser>()
                 .HasOne(u => u.Branch)
                 .WithMany(b => b.Users)
                 .HasForeignKey(u => u.BranchId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-
-            modelBuilder.Entity<Branch>()
-                .HasOne(b => b.Manager)
-                .WithMany()
-                .HasForeignKey(b => b.ManagerId)
-                .OnDelete(DeleteBehavior.SetNull);
 
 
             modelBuilder.Entity<Order>()
@@ -63,8 +56,17 @@ namespace RestaurantManagementSystem.Models
                 .WithOne(o => o.Payment)
                 .HasForeignKey<Payment>(p => p.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.TotalPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(u => u.Salary)
+                .HasPrecision(18, 2);
         }
-        public DbSet<User> Users { get; set; }
+
         public DbSet<Branch> Branches { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Order> Orders { get; set; }
