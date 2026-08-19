@@ -1,4 +1,4 @@
-﻿@model RestaurantManagementSystem.Models.Order
+@model RestaurantManagementSystem.Models.Order
 
 @{
     ViewData["Title"] = $"Order #{Model.OrderId}";
@@ -11,7 +11,8 @@
     .order-details-page {
         background-color: #0d0d0d;
         min-height: calc(100vh - 70px);
-        padding: 35px 5%;
+        /* Space below navbar */
+        padding: 70px 5% 35px;
         color: white;
     }
 
@@ -28,7 +29,8 @@
         .order-details-header h2 {
             font-size: 2rem;
             font-weight: 700;
-            margin: 50px;
+            /* Fixed spacing with navbar */
+            margin: 0;
         }
 
 
@@ -54,6 +56,7 @@
         margin-bottom: 35px;
     }
 
+
     .info-box {
         background-color: #191919;
         border: 1px solid #292929;
@@ -62,17 +65,20 @@
         height: 100%;
     }
 
+
     .info-label {
         color: #777;
         font-size: 0.8rem;
         margin-bottom: 5px;
     }
 
+
     .info-value {
         color: white;
         font-weight: 600;
         font-size: 1rem;
     }
+
 
     .total-value {
         color: #dc3545;
@@ -90,10 +96,12 @@
         margin-bottom: 20px;
     }
 
+
         .items-title h4 {
             margin: 0;
             font-weight: 700;
         }
+
 
     .items-line {
         height: 2px;
@@ -121,9 +129,11 @@
         border-collapse: collapse;
     }
 
+
         .order-table thead {
             background-color: #191919;
         }
+
 
         .order-table th {
             color: #aaa;
@@ -134,6 +144,7 @@
             border-bottom: 1px solid #333;
         }
 
+
         .order-table td {
             padding: 15px;
             border-bottom: 1px solid #292929;
@@ -141,13 +152,16 @@
             color: #ddd;
         }
 
+
         .order-table tbody tr {
             transition: 0.2s;
         }
 
+
             .order-table tbody tr:hover {
                 background-color: #171717;
             }
+
 
             .order-table tbody tr:last-child td {
                 border-bottom: none;
@@ -164,6 +178,7 @@
         border: 1px solid #333;
     }
 
+
     .item-name {
         font-weight: 600;
         color: white;
@@ -175,6 +190,7 @@
     .item-price {
         color: #aaa;
     }
+
 
     .item-subtotal {
         color: #dc3545;
@@ -190,6 +206,7 @@
         gap: 6px;
     }
 
+
     .quantity-input {
         width: 65px;
         background-color: #0d0d0d;
@@ -199,6 +216,7 @@
         padding: 6px;
         text-align: center;
     }
+
 
         .quantity-input:focus {
             background-color: #0d0d0d;
@@ -216,16 +234,19 @@
         border: none;
     }
 
+
         .btn-update:hover {
             background-color: #b22222;
             color: white;
         }
+
 
     .btn-delete {
         background-color: transparent;
         color: #dc3545;
         border: 1px solid #dc3545;
     }
+
 
         .btn-delete:hover {
             background-color: #dc3545;
@@ -244,16 +265,19 @@
         border-top: 1px solid #292929;
     }
 
+
     .btn-cancel {
         background-color: #dc3545;
         color: white;
         border: none;
     }
 
+
         .btn-cancel:hover {
             background-color: #b02a37;
             color: white;
         }
+
 
     .btn-confirm {
         background-color: #198754;
@@ -261,16 +285,19 @@
         border: none;
     }
 
+
         .btn-confirm:hover {
             background-color: #157347;
             color: white;
         }
+
 
     .btn-invoice {
         background-color: transparent;
         color: #aaa;
         border: 1px solid #555;
     }
+
 
         .btn-invoice:hover {
             background-color: #222;
@@ -308,35 +335,42 @@
     @@media (max-width: 768px) {
 
         .order-details-page {
-            padding: 25px 15px;
+            padding: 50px 15px 25px;
         }
+
 
         .order-details-header {
             align-items: flex-start;
             gap: 15px;
         }
 
+
             .order-details-header h2 {
                 font-size: 1.5rem;
             }
+
 
         .order-status {
             font-size: 0.8rem;
             padding: 6px 12px;
         }
 
+
         .order-info-card {
             padding: 15px;
         }
+
 
         .order-actions {
             flex-direction: column;
         }
 
+
             .order-actions form,
             .order-actions a {
                 width: 100%;
             }
+
 
             .order-actions button,
             .order-actions a {
@@ -359,6 +393,7 @@
         <h2>
             Order #@Model.OrderId
         </h2>
+
 
         <span class="order-status">
 
@@ -742,5 +777,6 @@
         </div>
 
     }
+
 
 </div>
