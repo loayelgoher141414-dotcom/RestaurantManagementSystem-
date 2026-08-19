@@ -1,4 +1,4 @@
-﻿@model RestaurantManagementSystem.Models.Order
+@model RestaurantManagementSystem.Models.Order
 
 @{
     ViewData["Title"] = "Invoice";
@@ -24,33 +24,54 @@
                 box-sizing: border-box;
             }
 
+
+            /* ================= PAGE ================= */
+
             body {
                 margin: 0;
-                padding: 30px;
+                padding: 0;
                 background: #0d0d0d;
                 color: #fff;
                 font-family: Arial, sans-serif;
             }
 
+
+            /* ================= INVOICE PAGE ================= */
+
+            .invoice-page {
+                min-height: calc(100vh - 70px);
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 100px 20px 50px;
+                width: 100%;
+            }
+
+
+            /* ================= INVOICE ================= */
+
             .invoice {
+                width: 100%;
                 max-width: 900px;
-                margin: auto;
                 background: #111;
                 border: 1px solid #333;
                 border-radius: 12px;
                 padding: 35px;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             }
+
 
             /* ================= HEADER ================= */
 
             .invoice-header {
-                margin-top: 50px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding-bottom: 25px;
                 border-bottom: 1px solid #333;
+                margin-bottom: 30px;
             }
+
 
             .logo {
                 color: #8b0000;
@@ -60,14 +81,17 @@
                 margin: 0;
             }
 
+
             .subtitle {
                 color: #888;
                 margin-top: 5px;
             }
 
+
             .invoice-number {
                 text-align: right;
             }
+
 
                 .invoice-number span {
                     color: #aaa;
@@ -75,10 +99,12 @@
                     margin-bottom: 5px;
                 }
 
+
                 .invoice-number strong {
                     color: #fff;
                     font-size: 20px;
                 }
+
 
             /* ================= ORDER INFO ================= */
 
@@ -89,6 +115,7 @@
                 margin-bottom: 30px;
             }
 
+
             .info-card {
                 background: #181818;
                 border: 1px solid #333;
@@ -96,20 +123,24 @@
                 padding: 18px;
             }
 
+
                 .info-card h4 {
                     color: #8b0000;
                     margin-top: 0;
                     margin-bottom: 15px;
                 }
 
+
                 .info-card p {
                     margin: 8px 0;
                     color: #ccc;
                 }
 
+
                 .info-card strong {
                     color: #fff;
                 }
+
 
             /* ================= STATUS ================= */
 
@@ -121,20 +152,24 @@
                 font-weight: bold;
             }
 
+
             .status-confirmed {
                 background: #198754;
                 color: white;
             }
+
 
             .status-pending {
                 background: #ffc107;
                 color: #111;
             }
 
+
             .status-cancelled {
                 background: #dc3545;
                 color: white;
             }
+
 
             /* ================= ITEMS ================= */
 
@@ -143,11 +178,13 @@
                 font-size: 20px;
             }
 
+
             .items-table {
                 width: 100%;
                 border-collapse: collapse;
                 margin-bottom: 25px;
             }
+
 
                 .items-table th {
                     background: #8b0000;
@@ -156,6 +193,7 @@
                     text-align: center;
                 }
 
+
                 .items-table td {
                     padding: 13px;
                     text-align: center;
@@ -163,15 +201,18 @@
                     color: #ddd;
                 }
 
+
                 .items-table tbody tr:hover {
                     background: #181818;
                 }
+
 
             .item-name {
                 text-align: left !important;
                 font-weight: bold;
                 color: white !important;
             }
+
 
             /* ================= TOTAL ================= */
 
@@ -180,6 +221,7 @@
                 justify-content: flex-end;
                 margin-top: 20px;
             }
+
 
             .total-box {
                 min-width: 280px;
@@ -190,10 +232,12 @@
                 text-align: right;
             }
 
+
             .total-label {
                 color: #aaa;
                 font-size: 15px;
             }
+
 
             .total-price {
                 display: block;
@@ -203,9 +247,11 @@
                 margin-top: 5px;
             }
 
+
                 .total-price span {
                     color: #8b0000;
                 }
+
 
             /* ================= PAYMENT ================= */
 
@@ -217,16 +263,19 @@
                 border-radius: 8px;
             }
 
+
                 .payment-section h3 {
                     margin-top: 0;
                     margin-bottom: 18px;
                 }
+
 
                 .payment-section label {
                     display: block;
                     margin-bottom: 8px;
                     color: #ccc;
                 }
+
 
                 .payment-section select {
                     width: 100%;
@@ -238,6 +287,7 @@
                     margin-bottom: 15px;
                 }
 
+
             .pay-btn {
                 width: 100%;
                 padding: 12px;
@@ -247,13 +297,16 @@
                 color: white;
                 font-size: 16px;
                 cursor: pointer;
+                transition: 0.3s;
             }
+
 
                 .pay-btn:hover {
                     background: #157347;
                 }
 
-            /* ================= PRINT ================= */
+
+            /* ================= ACTIONS ================= */
 
             .actions {
                 display: flex;
@@ -261,6 +314,7 @@
                 gap: 10px;
                 margin-top: 25px;
             }
+
 
             .print-btn {
                 padding: 11px 22px;
@@ -270,11 +324,14 @@
                 color: white;
                 cursor: pointer;
                 font-size: 15px;
+                transition: 0.3s;
             }
+
 
                 .print-btn:hover {
                     background: #b22222;
                 }
+
 
             .back-btn {
                 padding: 11px 22px;
@@ -284,12 +341,15 @@
                 border: 1px solid #444;
                 cursor: pointer;
                 font-size: 15px;
+                transition: 0.3s;
             }
+
 
                 .back-btn:hover {
                     background: #222;
                     color: white;
                 }
+
 
             /* ================= FOOTER ================= */
 
@@ -302,17 +362,20 @@
                 font-size: 13px;
             }
 
+
             /* ================= RESPONSIVE ================= */
 
             @@media (max-width: 700px) {
 
-                body {
-                    padding: 10px;
+                .invoice-page {
+                    padding: 70px 10px 30px;
                 }
+
 
                 .invoice {
                     padding: 20px;
                 }
+
 
                 .invoice-header {
                     flex-direction: column;
@@ -320,33 +383,40 @@
                     gap: 15px;
                 }
 
+
                 .invoice-number {
                     text-align: left;
                 }
+
 
                 .info-grid {
                     grid-template-columns: 1fr;
                 }
 
+
                 .items-table {
                     font-size: 13px;
                 }
+
 
                     .items-table th,
                     .items-table td {
                         padding: 8px;
                     }
 
+
                 .total-section {
                     justify-content: stretch;
                 }
+
 
                 .total-box {
                     width: 100%;
                 }
             }
 
-            /* ================= PRINT MODE ================= */
+
+            /* ================= PRINT ================= */
 
             @@media print {
 
@@ -356,27 +426,41 @@
                     padding: 0;
                 }
 
+
+                .invoice-page {
+                    min-height: auto;
+                    padding: 0;
+                    display: block;
+                }
+
+
                 .invoice {
                     max-width: 100%;
+                    width: 100%;
                     border: none;
                     box-shadow: none;
                     background: white;
                     color: black;
                     padding: 0;
+                    border-radius: 0;
                 }
+
 
                 .payment-section,
                 .actions {
                     display: none;
                 }
 
+
                 .invoice-header {
                     border-bottom: 2px solid #333;
                 }
 
+
                 .logo {
                     color: #8b0000;
                 }
+
 
                 .info-card,
                 .total-box {
@@ -384,25 +468,30 @@
                     border: 1px solid #ccc;
                 }
 
+
                     .info-card p,
                     .subtitle,
                     .total-label {
                         color: #333;
                     }
 
+
                     .info-card strong,
                     .total-price {
                         color: #111;
                     }
 
+
                 .items-table th {
                     background: #333;
                 }
+
 
                 .items-table td {
                     color: #111;
                     border-bottom: 1px solid #ccc;
                 }
+
 
                 .invoice-footer {
                     color: #555;
@@ -416,297 +505,298 @@
 
 <body>
 
-    <div class="invoice">
+    <div class="invoice-page">
+
+        <div class="invoice">
 
 
-        <!-- ================= HEADER ================= -->
+            <!-- ================= HEADER ================= -->
 
-        <div class="invoice-header">
+            <div class="invoice-header">
 
-            <div>
+                <div>
 
-                <h1 class="logo">
-                    RMS
-                </h1>
+                    <h1 class="logo">
+                        RMS
+                    </h1>
 
-                <div class="subtitle">
-                    Restaurant Management System
                 </div>
 
-            </div>
 
-
-            <div class="invoice-number">
-
-                <span>
-                    Invoice
-                </span>
-
-                <strong>
-                    #@Model.OrderId
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= ORDER INFORMATION ================= -->
-
-        <div class="info-grid">
-
-
-            <div class="info-card">
-
-                <h4>
-                    Customer Information
-                </h4>
-
-                <p>
-                    <strong>User ID:</strong>
-                    @Model.UserId
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    @(Model.User?.Email ?? "N/A")
-                </p>
-
-            </div>
-
-
-            <div class="info-card">
-
-                <h4>
-                    Order Information
-                </h4>
-
-                <p>
-                    <strong>Branch:</strong>
-                    @(Model.Branch?.Address ?? "N/A")
-                </p>
-
-                <p>
-                    <strong>Date:</strong>
-                    @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
-                </p>
-
-                <p>
-
-                    <strong>Status:</strong>
-
-                    @if (Model.OrderStatus == "Confirmed")
-                    {
-                        <span class="status status-confirmed">
-                            Confirmed
-                        </span>
-                    }
-                    else if (Model.OrderStatus == "Pending")
-                    {
-                        <span class="status status-pending">
-                            Pending
-                        </span>
-                    }
-                    else if (Model.OrderStatus == "Cancelled")
-                    {
-                        <span class="status status-cancelled">
-                            Cancelled
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="status">
-                            @Model.OrderStatus
-                        </span>
-                    }
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= ORDER ITEMS ================= -->
-
-        <h3 class="section-title">
-            Order Items
-        </h3>
-
-
-        <table class="items-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Item
-                    </th>
-
-                    <th>
-                        Quantity
-                    </th>
-
-                    <th>
-                        Unit Price
-                    </th>
-
-                    <th>
-                        Subtotal
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                @foreach (var item in Model.OrderItems)
-                {
-                    <tr>
-
-                        <td class="item-name">
-                            @item.Item.ItemName
-                        </td>
-
-                        <td>
-                            @item.Quantity
-                        </td>
-
-                        <td>
-                            @item.ItemPrice.ToString("0.00") EGP
-                        </td>
-
-                        <td>
-                            @((item.ItemPrice * item.Quantity).ToString("0.00")) EGP
-                        </td>
-
-                    </tr>
-                }
-
-            </tbody>
-
-        </table>
-
-
-        <!-- ================= TOTAL ================= -->
-
-        <div class="total-section">
-
-            <div class="total-box">
-
-                <div class="total-label">
-                    Total Amount
-                </div>
-
-                <span class="total-price">
+                <div class="invoice-number">
 
                     <span>
-                        @Model.TotalPrice.ToString("0.00")
+                        Invoice
                     </span>
 
-                    EGP
+                    <strong>
+                        #@Model.OrderId
+                    </strong>
 
-                </span>
+                </div>
+
+            </div>
+
+
+            <!-- ================= ORDER INFORMATION ================= -->
+
+            <div class="info-grid">
+
+
+                <div class="info-card">
+
+                    <h4>
+                        Customer Information
+                    </h4>
+
+                    <p>
+                        <strong>User ID:</strong>
+                        @Model.UserId
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        @(Model.User?.Email ?? "N/A")
+                    </p>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <h4>
+                        Order Information
+                    </h4>
+
+                    <p>
+                        <strong>Branch:</strong>
+                        @(Model.Branch?.Address ?? "N/A")
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+
+                    <p>
+
+                        <strong>Status:</strong>
+
+                        @if (Model.OrderStatus == "Confirmed")
+                        {
+                            <span class="status status-confirmed">
+                                Confirmed
+                            </span>
+                        }
+                        else if (Model.OrderStatus == "Pending")
+                        {
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        }
+                        else if (Model.OrderStatus == "Cancelled")
+                        {
+                            <span class="status status-cancelled">
+                                Cancelled
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status">
+                                @Model.OrderStatus
+                            </span>
+                        }
+
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
+
+            <!-- ================= ORDER ITEMS ================= -->
+
+            <h3 class="section-title">
+                Order Items
+            </h3>
 
 
-        <!-- ================= PAYMENT ================= -->
-        @if (Model.OrderStatus == "Confirmed")
-        {
-            <div class="payment-section">
+            <table class="items-table">
 
-                <h3>
-                    Payment
-                </h3>
+                <thead>
 
-                <form asp-action="Pay"
-                      asp-controller="Payment"
-                      method="post">
+                    <tr>
 
-                    @Html.AntiForgeryToken()
+                        <th>
+                            Item
+                        </th>
 
-                    <input type="hidden"
-                           name="orderId"
-                           value="@Model.OrderId" />
+                        <th>
+                            Quantity
+                        </th>
 
-                    <label for="paymentMethod">
-                        Payment Method
-                    </label>
+                        <th>
+                            Unit Price
+                        </th>
 
-                    <select id="paymentMethod"
-                            name="paymentMethod"
-                            required>
+                        <th>
+                            Subtotal
+                        </th>
 
-                        <option value="">
-                            -- Select Payment Method --
-                        </option>
+                    </tr>
 
-                        <option value="Cash">
-                            Cash
-                        </option>
+                </thead>
 
-                        <option value="Visa">
-                            Visa
-                        </option>
 
-                        <option value="Wallet">
-                            Wallet
-                        </option>
+                <tbody>
 
-                    </select>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
 
-                    <button type="submit"
-                            class="pay-btn">
+                            <td class="item-name">
+                                @item.Item.ItemName
+                            </td>
 
-                        Pay Now
+                            <td>
+                                @item.Quantity
+                            </td>
 
-                    </button>
+                            <td>
+                                @item.ItemPrice.ToString("0.00") EGP
+                            </td>
 
-                </form>
+                            <td>
+                                @((item.ItemPrice * item.Quantity).ToString("0.00")) EGP
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+
+            <!-- ================= TOTAL ================= -->
+
+            <div class="total-section">
+
+                <div class="total-box">
+
+                    <div class="total-label">
+                        Total Amount
+                    </div>
+
+                    <span class="total-price">
+
+                        <span>
+                            @Model.TotalPrice.ToString("0.00")
+                        </span>
+
+                        EGP
+
+                    </span>
+
+                </div>
 
             </div>
-        }
 
 
-        <!-- ================= ACTIONS ================= -->
+            <!-- ================= PAYMENT ================= -->
+            @if (Model.OrderStatus == "Confirmed")
+            {
+                <div class="payment-section">
 
-        <div class="actions">
+                    <h3>
+                        Payment
+                    </h3>
 
-            <button type="button"
-                    onclick="window.print()"
-                    class="print-btn">
+                    <form asp-action="Pay"
+                          asp-controller="Payment"
+                          method="post">
 
-                Print Invoice
+                        @Html.AntiForgeryToken()
 
-            </button>
+                        <input type="hidden"
+                               name="orderId"
+                               value="@Model.OrderId" />
+
+                        <label for="paymentMethod">
+                            Payment Method
+                        </label>
+
+                        <select id="paymentMethod"
+                                name="paymentMethod"
+                                required>
+
+                            <option value="">
+                                -- Select Payment Method --
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="Visa">
+                                Visa
+                            </option>
+
+                            <option value="Wallet">
+                                Wallet
+                            </option>
+
+                        </select>
+
+                        <button type="submit"
+                                class="pay-btn">
+
+                            Pay Now
+
+                        </button>
+
+                    </form>
+
+                </div>
+            }
 
 
-            <button type="button"
-                    onclick="window.close()"
-                    class="back-btn">
+            <!-- ================= ACTIONS ================= -->
 
-                Close
+            <div class="actions">
 
-            </button>
+                <button type="button"
+                        onclick="window.print()"
+                        class="print-btn">
 
-        </div>
+                    Print Invoice
+
+                </button>
 
 
-        <!-- ================= FOOTER ================= -->
+                <button type="button"
+                        onclick="window.close()"
+                        class="back-btn">
 
-        <div class="invoice-footer">
+                    Close
 
-            Thank you for choosing RMS
+                </button>
 
-            <br />
+            </div>
 
-            Restaurant Management System © 2026
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="invoice-footer">
+
+                Thank you for choosing RMS
+
+                <br />
+
+                Restaurant Management System © 2026
+
+            </div>
+
 
         </div>
 
